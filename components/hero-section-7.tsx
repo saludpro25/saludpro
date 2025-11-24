@@ -1,37 +1,60 @@
-"use client"
+"use client";
 
-import DirectorySearchBar from "@/components/directory-search-bar"
+import DirectorySearchBar from "@/components/directory-search-bar";
+import { HealthMatrixBackground } from "@/components/health-matrix-background";
+import Image from "next/image";
 
 export function HeroSection7() {
   return (
-    <section className="py-36 md:py-44 lg:py-56 xl:py-72 2xl:py-80 px-12 lg:px-20 xl:px-28 2xl:px-36 min-h-[85vh] lg:min-h-[90vh] xl:min-h-[95vh] 2xl:min-h-screen" aria-labelledby="hero-heading">
-      <div className="container px-12 lg:px-20 xl:px-24 2xl:px-28 flex flex-col items-center gap-12 lg:gap-16 mx-auto">
-        <div className="flex flex-col items-center lg:items-start gap-8 w-full max-w-6xl">
-          <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between w-full gap-6 lg:gap-8">
-            <div className="flex flex-col items-center lg:items-start gap-6 lg:gap-8 lg:flex-1 lg:max-w-2xl">
-              <h1 id="hero-heading" className="text-white font-bold text-center lg:text-left">
-                <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-4 lg:mb-6 animate-fade-in-up leading-tight">
-                  DIRECTORIO
-                </div>
-                <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl animate-fade-in-up animation-delay-200 leading-tight">
-                  Fondo Emprender: Cali
-                </div>
-              </h1>
-              <div className="text-white/80 text-sm sm:text-base md:text-lg lg:text-xl max-w-2xl text-center lg:text-left space-y-2 lg:space-y-3">
-                <p className="animate-fade-in-up animation-delay-400 leading-relaxed">
-                  Directorio completo de empresas, servicios
-                </p>
-                <p className="animate-fade-in-up animation-delay-600 leading-relaxed">
-                  y profesionales vinculados al SENA.
-                </p>
-              </div>
+    <section
+      className="relative h-screen w-full bg-background overflow-hidden"
+      aria-labelledby="hero-heading"
+    >
+      {/* Fondo animado con iconos médicos */}
+      <HealthMatrixBackground />
+
+      {/* Contenido principal */}
+      <div className="relative z-10 h-full w-full flex items-center justify-center px-6 md:px-12 lg:px-20">
+        <div className="container mx-auto grid lg:grid-cols-2 gap-8 lg:gap-16 items-center max-w-7xl">
+          {/* Columna izquierda: Texto y buscador */}
+
+          {/* Columna derecha: Imagen */}
+          <div className="hidden lg:flex items-center justify-center">
+            <div className="relative w-full max-w-md aspect-square rounded-3xl overflow-hidden shadow-2xl border-4 border-primary/10">
+              <Image
+                src="/hero.webp"
+                alt="Hero SaludPro"
+                fill
+                className="object-cover"
+                priority
+              />
             </div>
-            <div className="w-full lg:w-auto lg:flex-1 lg:max-w-md xl:max-w-lg mt-2 lg:mt-0 lg:ml-auto">
+          </div>
+          <div className="flex flex-col items-center lg:items-start gap-6 lg:gap-8">
+            <h1
+              id="hero-heading"
+              className="text-primary font-bold text-center lg:text-left"
+            >
+              <div className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl leading-tight">
+                DIRECTORIO SALUDPRO
+              </div>
+            </h1>
+            <div className="text-muted-foreground text-base md:text-lg lg:text-xl text-center lg:text-left space-y-3">
+              <p className="leading-relaxed">
+                Encuentra especialistas confiables, centros médicos verificados
+                y servicios de salud en tu ciudad.
+              </p>
+              <p className="leading-relaxed text-accent font-medium">
+                El directorio profesional para conectar pacientes con
+                especialistas verificados en Colombia.
+              </p>
+            </div>
+            <div className="w-full max-w-xl">
               <DirectorySearchBar />
             </div>
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }

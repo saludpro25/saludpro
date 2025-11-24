@@ -1,8 +1,9 @@
 import { LpNavbar1 } from "@/components/lp-navbar-1"
 import { HeroSection7 } from "@/components/hero-section-7"
-// import { CompanyStories } from "@/components/company-stories"
 import { RecommendedCompanies } from "@/components/recommended-companies"
-import { AnimatedLetter } from "@/components/animated-letter"
+import { HowItWorksSection } from "@/components/how-it-works-section"
+import { BenefitsSection } from "@/components/benefits-section"
+import { KitDigitalSection } from "@/components/kit-digital-section"
 import { FaqSection1 } from "@/components/faq-section-1"
 import { Footer2 } from "@/components/footer-2"
 
@@ -11,9 +12,10 @@ export default function Home() {
     <main>
       <LpNavbar1 />
       <HeroSection7 />
-      {/* <CompanyStories /> */}
       <RecommendedCompanies />
-      <AnimatedLetter />
+      <HowItWorksSection />
+      <BenefitsSection />
+      <KitDigitalSection />
       <FaqSection1 />
       <Footer2 />
     </main>

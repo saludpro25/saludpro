@@ -6,20 +6,20 @@ import Link from "next/link"
 
 const faqs = [
   {
-    question: "¿El Directorio SENA es gratuito?",
-    answer: "Sí, el registro y creación de tu perfil empresarial es completamente gratuito. Puedes mostrar tus productos, servicios y conectar con la comunidad SENA.",
-  },
-  {
-    question: "¿Puedo cancelar o eliminar mi perfil en cualquier momento?",
-    answer: "Sí, puedes desactivar o eliminar tu perfil cuando lo desees. No hay compromisos a largo plazo y tienes control total sobre tu información.",
+    question: "¿El registro para profesionales es gratuito?",
+    answer: "Sí. Puedes crear tu perfil profesional sin costo y actualizarlo cuando desees.",
   },
   {
     question: "¿Quiénes pueden registrarse en el directorio?",
-    answer: "Egresados SENA, instructores y empresas vinculadas al ecosistema SENA pueden crear su perfil. Buscamos conectar a toda la comunidad emprendedora y empresarial formada por el SENA.",
+    answer: "Profesionales independientes de la salud, centros médicos y especialistas certificados en Colombia.",
   },
   {
-    question: "¿Cómo puedo destacar mi negocio en el directorio?",
-    answer: "Completa tu perfil al 100%, agrega imágenes de calidad, mantén actualizada tu información de contacto, horarios y productos. Los perfiles completos tienen mayor visibilidad.",
+    question: "¿Cómo destaco mi perfil en el directorio?",
+    answer: "Completa tu perfil al 100%, agrega fotos profesionales, mantén tus datos actualizados y considera activar opciones de visibilidad destacada.",
+  },
+  {
+    question: "¿Puedo editar o eliminar mi perfil?",
+    answer: "Sí, puedes hacerlo en cualquier momento desde tu panel.",
   },
 ]
 

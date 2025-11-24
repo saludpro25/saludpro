@@ -29,14 +29,35 @@ interface Company {
 }
 
 const categoryLabels: Record<string, string> = {
-  'emprendimiento-egresado': 'Egresado con Emprendimiento',
-  'empresa-fe': 'Empresa Ganadora FE',
-  'agente-digitalizador': 'Agente Digitalizador',
-  // Legacy values para compatibilidad
-  'egresado': 'Egresado con Emprendimiento',
-  'empresa': 'Empresa Ganadora FE',
-  'instructor': 'Agente Digitalizador'
+  'psicologia': 'Psicología',
+  'nutricion': 'Nutrición',
+  'fisioterapia': 'Fisioterapia',
+  'medicina-general': 'Medicina general',
+  'terapias-alternativas': 'Terapias alternativas',
+  'dermatologia': 'Dermatología',
+  'odontologia': 'Odontología',
+  'fonoaudiologia': 'Fonoaudiología',
+  'wellness-fitness': 'Wellness & Fitness',
+  'centros-medicos': 'Centros Médicos',
+  'terapia-ocupacional': 'Terapia ocupacional',
+  'pediatria': 'Pediatría',
+  'cardiologia': 'Cardiología'
 }
+
+const modalityLabels: Record<string, string> = {
+  'presencial': 'Presencial',
+  'virtual': 'Virtual / Online',
+  'mixta': 'Mixta'
+}
+
+const cityLabels: string[] = [
+  'Cali',
+  'Bogotá',
+  'Medellín',
+  'Barranquilla',
+  'Bucaramanga',
+  'Pereira'
+]
 
 function SearchContent() {
   const searchParams = useSearchParams()
@@ -46,12 +67,13 @@ function SearchContent() {
   const [companies, setCompanies] = useState<Company[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
-  const [selectedIndustry, setSelectedIndustry] = useState<string | null>(null)
+  const [selectedModality, setSelectedModality] = useState<string | null>(null)
+  const [selectedCity, setSelectedCity] = useState<string | null>(null)
   const supabase = createClient()
 
   useEffect(() => {
     searchCompanies()
-  }, [query, selectedCategory, selectedIndustry])
+  }, [query, selectedCategory, selectedModality, selectedCity])
 
   const searchCompanies = async () => {
     setIsLoading(true)
@@ -87,9 +109,14 @@ function SearchContent() {
         queryBuilder = queryBuilder.eq('category', selectedCategory)
       }
 
-      // Aplicar filtro de industria
-      if (selectedIndustry) {
-        queryBuilder = queryBuilder.eq('industry', selectedIndustry)
+      // Aplicar filtro de modalidad
+      if (selectedModality) {
+        queryBuilder = queryBuilder.eq('modality', selectedModality)
+      }
+
+      // Aplicar filtro de ciudad
+      if (selectedCity) {
+        queryBuilder = queryBuilder.eq('city', selectedCity)
       }
 
       const { data, error } = await queryBuilder
@@ -111,7 +138,7 @@ function SearchContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white via-gray-50 to-white">
+    <div className="min-h-screen bg-background">
       {/* Navbar */}
       <LpNavbar1 />
       
@@ -119,23 +146,23 @@ function SearchContent() {
       <div className="bg-white border-b sticky top-[72px] z-10 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="mb-4">
-            <h1 className="text-3xl font-bold text-gray-900">Directorio Empresarial</h1>
-            <p className="text-gray-600 mt-1">
-              Encuentra empresas, egresados e instructores de la comunidad SENA
+            <h1 className="text-3xl font-bold text-primary">Directorio de Especialistas en Salud</h1>
+            <p className="text-foreground mt-1">
+              Encuentra profesionales verificados de salud y bienestar: psicólogos, nutricionistas, fisioterapeutas y más.
             </p>
           </div>
           <form onSubmit={handleSearch} className="flex gap-3">
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted" />
               <Input
                 type="text"
-                placeholder="Buscar por nombre, industria, ciudad..."
+                placeholder="Buscar por nombre, especialidad, servicio o ciudad..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                className="pl-10"
+                className="pl-10 bg-background text-foreground"
               />
             </div>
-            <Button type="submit" disabled={isLoading}>
+            <Button type="submit" disabled={isLoading} className="bg-accent hover:bg-accent/90 text-white">
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -146,6 +173,9 @@ function SearchContent() {
               )}
             </Button>
           </form>
+          <p className="text-sm text-muted mt-2">
+            Encuentra el especialista adecuado según tu necesidad.
+          </p>
         </div>
       </div>
 
@@ -158,12 +188,12 @@ function SearchContent() {
               <CardContent className="pt-6">
                 <div className="flex items-center gap-2 mb-4">
                   <Filter className="h-5 w-5 text-primary" />
-                  <h2 className="text-lg font-semibold">Filtros</h2>
+                  <h2 className="text-lg font-semibold text-foreground">Filtros</h2>
                 </div>
 
                 {/* Category Filter */}
                 <div className="mb-6">
-                  <h3 className="font-medium text-sm text-gray-700 mb-3">Categoría</h3>
+                  <h3 className="font-medium text-sm text-foreground mb-3">Categoría</h3>
                   <div className="space-y-2">
                     <Button
                       variant={selectedCategory === null ? "default" : "outline"}
@@ -187,15 +217,68 @@ function SearchContent() {
                   </div>
                 </div>
 
+                {/* Modality Filter */}
+                <div className="mb-6">
+                  <h3 className="font-medium text-sm text-foreground mb-3">Modalidad de atención</h3>
+                  <div className="space-y-2">
+                    <Button
+                      variant={selectedModality === null ? "default" : "outline"}
+                      size="sm"
+                      className="w-full justify-start"
+                      onClick={() => setSelectedModality(null)}
+                    >
+                      Todas
+                    </Button>
+                    {Object.entries(modalityLabels).map(([key, label]) => (
+                      <Button
+                        key={key}
+                        variant={selectedModality === key ? "default" : "outline"}
+                        size="sm"
+                        className="w-full justify-start"
+                        onClick={() => setSelectedModality(key)}
+                      >
+                        {label}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* City Filter */}
+                <div className="mb-6">
+                  <h3 className="font-medium text-sm text-foreground mb-3">Ciudad</h3>
+                  <div className="space-y-2">
+                    <Button
+                      variant={selectedCity === null ? "default" : "outline"}
+                      size="sm"
+                      className="w-full justify-start"
+                      onClick={() => setSelectedCity(null)}
+                    >
+                      Todas
+                    </Button>
+                    {cityLabels.map((city) => (
+                      <Button
+                        key={city}
+                        variant={selectedCity === city ? "default" : "outline"}
+                        size="sm"
+                        className="w-full justify-start"
+                        onClick={() => setSelectedCity(city)}
+                      >
+                        {city}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+
                 {/* Reset Filters */}
-                {(selectedCategory || selectedIndustry || query) && (
+                {(selectedCategory || selectedModality || selectedCity || query) && (
                   <Button
                     variant="ghost"
                     size="sm"
                     className="w-full"
                     onClick={() => {
                       setSelectedCategory(null)
-                      setSelectedIndustry(null)
+                      setSelectedModality(null)
+                      setSelectedCity(null)
                       setQuery('')
                     }}
                   >
@@ -209,12 +292,12 @@ function SearchContent() {
           {/* Results */}
           <div className="lg:col-span-3">
             <div className="mb-6">
-              <p className="text-gray-600">
+              <p className="text-foreground">
                 {isLoading ? (
                   'Buscando...'
                 ) : (
                   <>
-                    {companies.length} {companies.length === 1 ? 'empresa encontrada' : 'empresas encontradas'}
+                    {companies.length} {companies.length === 1 ? 'especialista encontrado' : 'especialistas encontrados'}
                     {query && <span className="font-semibold"> para "{query}"</span>}
                   </>
                 )}
@@ -307,20 +390,20 @@ function SearchContent() {
             ) : (
               <Card>
                 <CardContent className="py-20 text-center">
-                  <Building2 className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                    No se encontraron empresas
+                  <Building2 className="h-16 w-16 text-muted mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold text-foreground mb-2">
+                    No se encontraron especialistas
                   </h3>
-                  <p className="text-gray-600 mb-6">
+                  <p className="text-muted mb-6">
                     Intenta con otros términos de búsqueda o ajusta los filtros
                   </p>
                   <Button
                     variant="outline"
-                    className="text-gray-700 hover:text-gray-900 hover:bg-gray-50"
                     onClick={() => {
                       setQuery('')
                       setSelectedCategory(null)
-                      setSelectedIndustry(null)
+                      setSelectedModality(null)
+                      setSelectedCity(null)
                     }}
                   >
                     Limpiar búsqueda
@@ -338,8 +421,8 @@ function SearchContent() {
 export default function SearchPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50/30 flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-green-600" />
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-accent" />
       </div>
     }>
       <SearchContent />

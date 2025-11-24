@@ -65,17 +65,20 @@ export default function BlogsPage() {
   );
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50/30">
+    <main className="min-h-screen bg-background">
       <LpNavbar1 />
       
       <div className="container mx-auto px-6 py-16">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Historias de Éxito
+          <h1 className="text-4xl md:text-5xl font-bold text-primary mb-4">
+            Blog
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Descubre las historias inspiradoras de emprendedores del SENA
+          <p className="text-xl text-foreground max-w-3xl mx-auto">
+            Bienvenido al blog de <a href="http://saludpro.net/" className="text-accent hover:underline font-semibold">SaludPro</a>
+          </p>
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto mt-4">
+            Aquí compartimos las experiencias y conocimientos de especialistas, centros médicos y profesionales del bienestar. Aprende con historias reales, entrevistas, tips prácticos, guías digitales y todo lo que impulsa la salud moderna en Colombia.
           </p>
         </div>
 
@@ -88,7 +91,7 @@ export default function BlogsPage() {
               placeholder="Buscar blogs..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-4 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-500 focus:border-transparent shadow-sm"
+              className="w-full pl-12 pr-4 py-4 rounded-xl border border-gray-200 focus:ring-2 focus:ring-accent focus:border-transparent shadow-sm bg-white text-foreground"
             />
           </div>
         </div>
@@ -96,7 +99,7 @@ export default function BlogsPage() {
         {/* Blogs Grid */}
         {isLoading ? (
           <div className="flex justify-center items-center py-20">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent"></div>
           </div>
         ) : filteredBlogs.length === 0 ? (
           <div className="text-center py-20">
@@ -111,10 +114,10 @@ export default function BlogsPage() {
               <Link
                 key={blog.id}
                 href={`/blog/${blog.slug}`}
-                className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100"
+                className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border-2 border-primary/10 hover:border-accent/30"
               >
                 {/* Cover Image */}
-                <div className="relative h-48 bg-gradient-to-br from-green-100 to-green-200 overflow-hidden">
+                <div className="relative h-48 bg-gradient-to-br from-accent/10 to-accent/20 overflow-hidden">
                   {blog.cover_image ? (
                     <img
                       src={blog.cover_image}
@@ -123,19 +126,19 @@ export default function BlogsPage() {
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
-                      <FileText className="w-16 h-16 text-green-600/30" />
+                      <FileText className="w-16 h-16 text-accent/30" />
                     </div>
                   )}
                 </div>
 
                 {/* Content */}
                 <div className="p-6">
-                  <h2 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-green-600 transition-colors line-clamp-2">
+                  <h2 className="text-xl font-bold text-primary mb-3 group-hover:text-accent transition-colors line-clamp-2">
                     {blog.title}
                   </h2>
                   
-                  <p className="text-gray-600 text-sm mb-4 line-clamp-3">
-                    {blog.excerpt || 'Lee este inspirador artículo...'}
+                  <p className="text-muted-foreground text-sm mb-4 line-clamp-3">
+                    {blog.excerpt || 'Lee este artículo sobre salud y bienestar...'}
                   </p>
 
                   {/* Meta */}
@@ -161,7 +164,7 @@ export default function BlogsPage() {
                     <div className="mt-4 pt-4 border-t border-gray-100">
                       <Link
                         href={`/${blog.company.slug}`}
-                        className="text-xs text-green-600 hover:text-green-700 font-medium"
+                        className="text-xs text-accent hover:text-accent/80 font-medium"
                         onClick={(e) => e.stopPropagation()}
                       >
                         {blog.company.company_name}

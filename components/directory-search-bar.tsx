@@ -158,7 +158,7 @@ function DirectorySearchBar() {
   }
 
   return (
-    <div className="flex justify-center lg:justify-end w-full">
+    <div className="flex justify-center lg:justify-start w-full">
       <motion.div 
         className="relative flex flex-col justify-start"
         animate={{
@@ -171,7 +171,7 @@ function DirectorySearchBar() {
       >
         <div className="w-full sticky top-0 bg-transparent z-10">
           <motion.label 
-            className="text-xs font-medium text-white/70 mb-2 block" 
+            className="text-xs font-medium text-muted-foreground mb-2 block" 
             htmlFor="search"
             animate={{
               opacity: isExpanded ? 1 : 0.7
@@ -189,7 +189,7 @@ function DirectorySearchBar() {
                 onChange={handleInputChange}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
-                className="pl-4 pr-12 py-3 h-12 text-base rounded-xl bg-white/10 border-white/20 text-white placeholder:text-white/70 focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-0 backdrop-blur-sm transition-all duration-300 w-full"
+                className="pl-4 pr-12 py-3 h-12 text-base rounded-xl bg-background border-border text-foreground placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-0 transition-all duration-300 w-full shadow-sm"
               />
               <div className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5">
                 <AnimatePresence mode="popLayout">
@@ -201,7 +201,7 @@ function DirectorySearchBar() {
                       exit={{ y: 20, opacity: 0 }}
                       transition={{ duration: 0.2 }}
                     >
-                      <Loader2 className="w-5 h-5 text-white/70 animate-spin" />
+                      <Loader2 className="w-5 h-5 text-muted-foreground animate-spin" />
                     </motion.div>
                   ) : query.length > 0 ? (
                     <motion.div
@@ -212,7 +212,7 @@ function DirectorySearchBar() {
                       transition={{ duration: 0.2 }}
                     >
                       <button type="submit" className="focus:outline-none">
-                        <Send className="w-5 h-5 text-white/70 hover:text-white transition-colors" />
+                        <Send className="w-5 h-5 text-accent hover:text-accent/80 transition-colors" />
                       </button>
                     </motion.div>
                   ) : (
@@ -223,7 +223,7 @@ function DirectorySearchBar() {
                       exit={{ y: 20, opacity: 0 }}
                       transition={{ duration: 0.2 }}
                     >
-                      <Search className="w-5 h-5 text-white/70" />
+                      <Search className="w-5 h-5 text-muted-foreground" />
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -236,7 +236,7 @@ function DirectorySearchBar() {
           <AnimatePresence>
             {isFocused && result && !selectedCompany && (
               <motion.div
-                className="w-full border rounded-xl shadow-lg overflow-hidden border-white/20 bg-white/10 backdrop-blur-md mt-1"
+                className="w-full border rounded-xl shadow-lg overflow-hidden border-border bg-background mt-1"
                 variants={container}
                 initial="hidden"
                 animate="show"
@@ -247,32 +247,32 @@ function DirectorySearchBar() {
                     result.companies.map((company) => (
                       <motion.li
                         key={company.id}
-                        className="px-4 py-3 flex items-center justify-between hover:bg-white/5 cursor-pointer rounded-lg"
+                        className="px-4 py-3 flex items-center justify-between hover:bg-muted cursor-pointer rounded-lg"
                         variants={item}
                         layout
                         onClick={() => handleCompanyClick(company)}
                       >
                         <div className="flex items-center gap-3 flex-1">
-                          <div className="flex-shrink-0 bg-white/20 rounded-lg flex items-center justify-center w-10 h-10">
-                            <Building2 className="h-5 w-5 text-white" />
+                          <div className="flex-shrink-0 bg-accent/10 rounded-lg flex items-center justify-center w-10 h-10">
+                            <Building2 className="h-5 w-5 text-accent" />
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 mb-1">
-                              <span className="text-sm font-medium text-white truncate">
+                              <span className="text-sm font-medium text-foreground truncate">
                                 {company.company_name}
                               </span>
                               {company.category && (
-                                <span className="text-xs text-white/60 capitalize">{company.category}</span>
+                                <span className="text-xs text-muted-foreground capitalize">{company.category}</span>
                               )}
                             </div>
                             <div className="flex flex-wrap gap-1">
                               {company.industry && (
-                                <span className="text-xs text-white/80 bg-white/10 px-2 py-0.5 rounded-full">
+                                <span className="text-xs text-foreground bg-secondary px-2 py-0.5 rounded-full">
                                   {company.industry}
                                 </span>
                               )}
                               {company.city && (
-                                <span className="text-xs text-white/80 bg-white/10 px-2 py-0.5 rounded-full">
+                                <span className="text-xs text-foreground bg-secondary px-2 py-0.5 rounded-full">
                                   {company.city}
                                 </span>
                               )}
@@ -283,15 +283,15 @@ function DirectorySearchBar() {
                     ))
                   ) : (
                     <motion.li
-                      className="px-4 py-6 text-center text-white/60"
+                      className="px-4 py-6 text-center text-muted-foreground"
                       variants={item}
                     >
                       {result.isLoading ? 'Buscando...' : 'No se encontraron empresas'}
                     </motion.li>
                   )}
                 </motion.ul>
-                <div className="mt-2 px-4 py-3 border-t border-white/20">
-                  <div className="flex items-center justify-between text-xs text-white/60">
+                <div className="mt-2 px-4 py-3 border-t border-border">
+                  <div className="flex items-center justify-between text-xs text-muted-foreground">
                     <span>{result.companies.length} {result.companies.length === 1 ? 'empresa encontrada' : 'empresas encontradas'}</span>
                     <span>ESC para cancelar</span>
                   </div>

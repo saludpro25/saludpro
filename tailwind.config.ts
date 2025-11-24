@@ -63,6 +63,12 @@ const config: Config = {
           border: 'hsl(var(--sidebar-border))',
           ring: 'hsl(var(--sidebar-ring))',
         },
+        // DirectorioSaludPro - Colores de marca directos
+        'directorio-blue': '#1D5DBF',
+        'saludpro-green': '#40a356',
+        'gray-dark': '#333333',
+        'gray-medium': '#666666',
+        'gray-light': '#F0F0F0',
       },
       borderRadius: {
         lg: 'var(--radius)',

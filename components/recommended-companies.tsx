@@ -162,7 +162,7 @@ const RecommendedCompanies: React.FC = () => {
       justify-content: center;
       align-items: center;
       overflow: hidden;
-      height: 60vh;
+      height: 450px;
       font-family: 'Roboto', sans-serif;
       transition: 0.25s;
       background: transparent;
@@ -187,12 +187,13 @@ const RecommendedCompanies: React.FC = () => {
       overflow: hidden;
       min-width: 60px;
       margin: 10px;
-      background-size: auto 120%;
+      background-size: cover;
       background-position: center;
       cursor: pointer;
       transition: 0.5s cubic-bezier(0.05, 0.61, 0.41, 0.95);
       border-radius: 30px;
       flex-grow: 1;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
     
     .company-item.active {
@@ -201,7 +202,8 @@ const RecommendedCompanies: React.FC = () => {
       max-width: 600px;
       margin: 0px;
       border-radius: 40px;
-      background-size: auto 100%;
+      background-size: cover;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     }
     
     .company-item.active .company-shadow {
@@ -260,6 +262,7 @@ const RecommendedCompanies: React.FC = () => {
       height: 40px;
       border-radius: 100%;
       background-color: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     }
     
     .company-info {
@@ -279,10 +282,12 @@ const RecommendedCompanies: React.FC = () => {
     .company-main {
       font-weight: bold;
       font-size: 1.2rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     }
     
     .company-sub {
       transition-delay: 0.1s;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     }
     
     .inactive-companies {
@@ -355,8 +360,14 @@ const RecommendedCompanies: React.FC = () => {
         background-position: center;
         position: relative;
         cursor: pointer;
-        transition: transform 0.3s ease;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
         overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      }
+      
+      .inactive-company:hover {
+        transform: scale(1.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
       }
       
       .inactive-company::before {
@@ -441,37 +452,37 @@ const RecommendedCompanies: React.FC = () => {
 
   if (loading) {
     return (
-      <section className="py-20 lg:py-24 px-4 lg:px-8 bg-gradient-to-b from-white via-gray-50 to-white">
+      <section className="py-20 lg:py-24 px-4 lg:px-8 bg-background">
         <div className="container px-6 mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              Empresas Más Recomendadas
+            <h2 className="text-3xl lg:text-4xl font-bold text-primary mb-4">
+              Especialistas cerca de ti
             </h2>
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-              Descubre las empresas ganadoras del Fondo Emprender más destacadas de Cali
+            <p className="text-foreground text-lg max-w-2xl mx-auto">
+              Explora la oferta de salud en las principales ciudades del país. Estamos creciendo cada semana.
             </p>
           </div>
         </div>
         <div className="flex justify-center items-center h-96">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent"></div>
         </div>
       </section>
     )
   }
 
   return (
-    <section className="py-40 lg:py-24 px-4 lg:px-8 bg-gradient-to-b from-white via-gray-50 to-white">
+    <section className="py-16 lg:py-20 px-4 lg:px-8 bg-secondary">
       <style dangerouslySetInnerHTML={{ __html: styles }} />
       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
       <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
 
       <div className="container px-6 mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-            Empresas Más Recomendadas
+        <div className="text-center mb-12">
+          <h2 className="text-3xl lg:text-4xl font-bold text-primary mb-4">
+            Especialistas cerca de ti
           </h2>
-          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-            Descubre las empresas ganadoras del Fondo Emprender más destacadas de Cali
+          <p className="text-foreground text-lg max-w-2xl mx-auto">
+            Explora la oferta de salud en las principales ciudades del país. Estamos creciendo cada semana.
           </p>
         </div>
       </div>

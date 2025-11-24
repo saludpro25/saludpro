@@ -28,7 +28,7 @@ export function Footer2() {
           <div className="flex flex-col lg:flex-row md:justify-between md:items-center gap-12">
             <div className="flex flex-col items-center lg:flex-row gap-12">
               <Link href="/" aria-label="Ir a la página de inicio">
-                <Logo asLink={false} />
+                <Logo asLink={false} variant="white" />
               </Link>
 
               <nav
@@ -61,7 +61,7 @@ export function Footer2() {
               <Input
                 type="email"
                 placeholder="Tu correo electrónico"
-                className="md:w-[242px]"
+                className="md:w-[242px] bg-white text-foreground placeholder:text-muted-foreground border-white"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -70,7 +70,7 @@ export function Footer2() {
               />
               <Button 
                 type="submit" 
-                className="w-full md:w-auto bg-white text-primary hover:bg-white/90" 
+                className="w-full md:w-auto bg-accent text-white hover:bg-accent/90" 
                 aria-label="Suscribirse al boletín"
               >
                 {subscribed ? "¡Suscrito!" : "Suscribirse"}
