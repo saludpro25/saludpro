@@ -19,7 +19,7 @@ export function HeroSection7() {
           {/* Columna izquierda: Texto y buscador */}
 
           {/* Columna derecha: Imagen */}
-          <div className="hidden lg:flex items-center justify-center">
+          <div className="flex items-center justify-center order-first lg:order-last">
             <div className="relative w-full max-w-md aspect-square rounded-3xl overflow-hidden shadow-2xl border-4 border-primary/10">
               <Image
                 src="/hero.webp"

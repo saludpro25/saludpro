@@ -178,13 +178,13 @@ function DirectorySearchBar() {
             }}
             transition={{ duration: 0.3 }}
           >
-            Directorio Empresarial SENA
+            Buscar Especialistas en Salud
           </motion.label>
           <form onSubmit={handleSearch}>
             <div className="relative">
               <Input
                 type="text"
-                placeholder="Buscar empresas..."
+                placeholder="Buscar especialistas, centros médicos..."
                 value={query}
                 onChange={handleInputChange}
                 onFocus={handleFocus}
