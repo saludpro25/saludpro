@@ -2,7 +2,7 @@
 
 ## 📧 Configuración en Supabase Dashboard
 
-Para que la recuperación de contraseña funcione correctamente con tu dominio `https://www.directoriosena.com/`, necesitas configurar las siguientes opciones en Supabase:
+Para que la recuperación de contraseña funcione correctamente con tu dominio `https://www.saludpro.net/`, necesitas configurar las siguientes opciones en Supabase:
 
 ### 1. URL de Redirección del Sitio
 
@@ -10,7 +10,7 @@ Ve a **Authentication → URL Configuration** en tu proyecto de Supabase:
 
 **Site URL:**
 ```
-https://www.directoriosena.com
+https://www.saludpro.net
 ```
 
 ### 2. URLs de Redirección Permitidas
@@ -18,9 +18,9 @@ https://www.directoriosena.com
 En **Redirect URLs**, agrega las siguientes URLs:
 
 ```
-https://www.directoriosena.com/auth/callback
-https://www.directoriosena.com/auth/reset-password
-https://www.directoriosena.com/**
+https://www.saludpro.net/auth/callback
+https://www.saludpro.net/auth/reset-password
+https://www.saludpro.net/**
 ```
 
 ### 3. Plantilla de Email de Recuperación
@@ -38,10 +38,10 @@ Actualiza la plantilla para que el link apunte a tu dominio:
 
 <p>Haz clic en el siguiente enlace para continuar:</p>
 
-<p><a href="https://www.directoriosena.com/auth/reset-password?token={{ .Token }}">Restablecer Contraseña</a></p>
+<p><a href="https://www.saludpro.net/auth/reset-password?token={{ .Token }}">Restablecer Contraseña</a></p>
 
 <p>O copia y pega esta URL en tu navegador:</p>
-<p>https://www.directoriosena.com/auth/reset-password?token={{ .Token }}</p>
+<p>https://www.saludpro.net/auth/reset-password?token={{ .Token }}</p>
 
 <p>Si no solicitaste restablecer tu contraseña, puedes ignorar este correo.</p>
 
@@ -66,10 +66,10 @@ Actualiza la plantilla para confirmar el email:
 
 <p>Haz clic en el siguiente enlace para confirmar tu correo electrónico:</p>
 
-<p><a href="https://www.directoriosena.com/auth/callback?token={{ .Token }}&type=signup">Confirmar Email</a></p>
+<p><a href="https://www.saludpro.net/auth/callback?token={{ .Token }}&type=signup">Confirmar Email</a></p>
 
 <p>O copia y pega esta URL en tu navegador:</p>
-<p>https://www.directoriosena.com/auth/callback?token={{ .Token }}&type=signup</p>
+<p>https://www.saludpro.net/auth/callback?token={{ .Token }}&type=signup</p>
 
 <p>Si no creaste esta cuenta, puedes ignorar este correo.</p>
 
@@ -94,8 +94,8 @@ Equipo de Directorio SENA</p>
 - ✅ Redirección al flujo de creación de empresa
 
 ### 3. URLs Configuradas
-- ✅ Registro: `https://www.directoriosena.com/auth/callback`
-- ✅ Reset: `https://www.directoriosena.com/auth/reset-password`
+- ✅ Registro: `https://www.saludpro.net/auth/callback`
+- ✅ Reset: `https://www.saludpro.net/auth/reset-password`
 - ✅ Callback maneja ambos tipos (signup y recovery)
 
 ## 🔐 Flujo de Recuperación de Contraseña
@@ -118,7 +118,7 @@ Equipo de Directorio SENA</p>
 
 ## ⚠️ Notas Importantes
 
-1. **Dominio en Producción:** Asegúrate de que todas las URLs usen `https://www.directoriosena.com/`
+1. **Dominio en Producción:** Asegúrate de que todas las URLs usen `https://www.saludpro.net/`
 2. **Variables de Entorno:** Verifica que `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY` estén configuradas
 3. **CORS:** Supabase debe tener tu dominio en la lista blanca
 4. **SSL:** El dominio debe tener certificado SSL válido (https)

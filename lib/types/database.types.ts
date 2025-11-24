@@ -43,7 +43,7 @@ export type Database = {
           user_id: string
           slug: string
           company_name: string
-          category: 'emprendimiento-egresado' | 'empresa-fe' | 'agente-digitalizador'
+          category: 'especialista-salud' | 'centro-medico' | 'agente-digitalizador'
           email: string
           phone?: string | null
           whatsapp?: string | null
@@ -74,7 +74,7 @@ export type Database = {
           user_id?: string
           slug?: string
           company_name?: string
-          category?: 'emprendimiento-egresado' | 'empresa-fe' | 'agente-digitalizador'
+          category?: 'especialista-salud' | 'centro-medico' | 'agente-digitalizador'
           email?: string
           phone?: string | null
           whatsapp?: string | null
@@ -371,7 +371,7 @@ export interface CompanyRegistrationForm {
   // Paso 2: Datos básicos
   company_name: string
   slug: string
-  category: 'emprendimiento-egresado' | 'empresa-fe' | 'agente-digitalizador'
+  category: 'especialista-salud' | 'centro-medico' | 'agente-digitalizador'
   
   // Paso 3: Información detallada
   phone: string
@@ -417,26 +417,26 @@ export const DEPARTMENT_OPTIONS = [
 ] as const
 
 export const INDUSTRY_OPTIONS = [
-  'Tecnología',
-  'Salud',
-  'Educación',
-  'Manufactura',
-  'Comercio',
-  'Servicios',
-  'Construcción',
-  'Agricultura',
-  'Turismo',
-  'Transporte y Logística',
-  'Finanzas',
-  'Marketing y Publicidad',
-  'Consultoría',
+  'Psicología',
+  'Nutrición',
+  'Fisioterapia',
+  'Medicina general',
+  'Terapias alternativas',
+  'Dermatología',
+  'Odontología',
+  'Fonoaudiología',
+  'Wellness & Fitness',
+  'Centros Médicos',
+  'Terapia ocupacional',
+  'Pediatría',
+  'Cardiología',
   'Otro',
 ] as const
 
 export const CATEGORY_OPTIONS = [
-  { value: 'emprendimiento-egresado', label: 'Egresado con Emprendimiento', description: 'Emprendimiento de egresado del SENA' },
-  { value: 'empresa-fe', label: 'Empresa Ganadora FE', description: 'Empresa ganadora del Fondo Emprender' },
-  { value: 'agente-digitalizador', label: 'Agente Digitalizador', description: 'Agente digitalizador aprobado' },
+  { value: 'especialista-salud', label: 'Especialistas en Salud', description: 'Profesionales independientes de diversas áreas de la salud y el bienestar' },
+  { value: 'centro-medico', label: 'Centros Médicos', description: 'Clínicas, consultorios, unidades de salud y centros especializados que ofrecen servicios integrales' },
+  { value: 'agente-digitalizador', label: 'Agente Digitalizador', description: 'Expertos y empresas que ofrecen soluciones: automatización IA, agenda, branding, sitios web y más' },
 ] as const
 
 // Blog types

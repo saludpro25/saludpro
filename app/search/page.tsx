@@ -29,25 +29,25 @@ interface Company {
 }
 
 const categoryLabels: Record<string, string> = {
-  'psicologia': 'Psicología',
-  'nutricion': 'Nutrición',
-  'fisioterapia': 'Fisioterapia',
-  'medicina-general': 'Medicina general',
-  'terapias-alternativas': 'Terapias alternativas',
-  'dermatologia': 'Dermatología',
-  'odontologia': 'Odontología',
-  'fonoaudiologia': 'Fonoaudiología',
-  'wellness-fitness': 'Wellness & Fitness',
-  'centros-medicos': 'Centros Médicos',
-  'terapia-ocupacional': 'Terapia ocupacional',
-  'pediatria': 'Pediatría',
-  'cardiologia': 'Cardiología'
+  'especialista-salud': 'Especialista en Salud',
+  'centro-medico': 'Centro Médico',
+  'agente-digitalizador': 'Agente Digitalizador'
 }
 
-const modalityLabels: Record<string, string> = {
-  'presencial': 'Presencial',
-  'virtual': 'Virtual / Online',
-  'mixta': 'Mixta'
+const industryLabels: Record<string, string> = {
+  'Psicología': 'Psicología',
+  'Nutrición': 'Nutrición',
+  'Fisioterapia': 'Fisioterapia',
+  'Medicina general': 'Medicina general',
+  'Terapias alternativas': 'Terapias alternativas',
+  'Dermatología': 'Dermatología',
+  'Odontología': 'Odontología',
+  'Fonoaudiología': 'Fonoaudiología',
+  'Wellness & Fitness': 'Wellness & Fitness',
+  'Centros Médicos': 'Centros Médicos',
+  'Terapia ocupacional': 'Terapia ocupacional',
+  'Pediatría': 'Pediatría',
+  'Cardiología': 'Cardiología'
 }
 
 const cityLabels: string[] = [
@@ -67,13 +67,13 @@ function SearchContent() {
   const [companies, setCompanies] = useState<Company[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
-  const [selectedModality, setSelectedModality] = useState<string | null>(null)
+  const [selectedIndustry, setSelectedIndustry] = useState<string | null>(null)
   const [selectedCity, setSelectedCity] = useState<string | null>(null)
   const supabase = createClient()
 
   useEffect(() => {
     searchCompanies()
-  }, [query, selectedCategory, selectedModality, selectedCity])
+  }, [query, selectedCategory, selectedIndustry, selectedCity])
 
   const searchCompanies = async () => {
     setIsLoading(true)
@@ -109,14 +109,14 @@ function SearchContent() {
         queryBuilder = queryBuilder.eq('category', selectedCategory)
       }
 
-      // Aplicar filtro de modalidad
-      if (selectedModality) {
-        queryBuilder = queryBuilder.eq('modality', selectedModality)
+      // Aplicar filtro de industria (especialidad)
+      if (selectedIndustry) {
+        queryBuilder = queryBuilder.eq('industry', selectedIndustry)
       }
 
       // Aplicar filtro de ciudad
       if (selectedCity) {
-        queryBuilder = queryBuilder.eq('city', selectedCity)
+        queryBuilder = queryBuilder.ilike('city', selectedCity)
       }
 
       const { data, error } = await queryBuilder
@@ -193,7 +193,7 @@ function SearchContent() {
 
                 {/* Category Filter */}
                 <div className="mb-6">
-                  <h3 className="font-medium text-sm text-foreground mb-3">Categoría</h3>
+                  <h3 className="font-medium text-sm text-foreground mb-3">Tipo de perfil</h3>
                   <div className="space-y-2">
                     <Button
                       variant={selectedCategory === null ? "default" : "outline"}
@@ -201,7 +201,7 @@ function SearchContent() {
                       className="w-full justify-start"
                       onClick={() => setSelectedCategory(null)}
                     >
-                      Todas
+                      Todos
                     </Button>
                     {Object.entries(categoryLabels).map(([key, label]) => (
                       <Button
@@ -217,25 +217,25 @@ function SearchContent() {
                   </div>
                 </div>
 
-                {/* Modality Filter */}
+                {/* Industry Filter (Especialidad) */}
                 <div className="mb-6">
-                  <h3 className="font-medium text-sm text-foreground mb-3">Modalidad de atención</h3>
-                  <div className="space-y-2">
+                  <h3 className="font-medium text-sm text-foreground mb-3">Especialidad</h3>
+                  <div className="space-y-2 max-h-80 overflow-y-auto">
                     <Button
-                      variant={selectedModality === null ? "default" : "outline"}
+                      variant={selectedIndustry === null ? "default" : "outline"}
                       size="sm"
                       className="w-full justify-start"
-                      onClick={() => setSelectedModality(null)}
+                      onClick={() => setSelectedIndustry(null)}
                     >
                       Todas
                     </Button>
-                    {Object.entries(modalityLabels).map(([key, label]) => (
+                    {Object.entries(industryLabels).map(([key, label]) => (
                       <Button
                         key={key}
-                        variant={selectedModality === key ? "default" : "outline"}
+                        variant={selectedIndustry === key ? "default" : "outline"}
                         size="sm"
                         className="w-full justify-start"
-                        onClick={() => setSelectedModality(key)}
+                        onClick={() => setSelectedIndustry(key)}
                       >
                         {label}
                       </Button>
@@ -270,14 +270,14 @@ function SearchContent() {
                 </div>
 
                 {/* Reset Filters */}
-                {(selectedCategory || selectedModality || selectedCity || query) && (
+                {(selectedCategory || selectedIndustry || selectedCity || query) && (
                   <Button
                     variant="ghost"
                     size="sm"
                     className="w-full"
                     onClick={() => {
                       setSelectedCategory(null)
-                      setSelectedModality(null)
+                      setSelectedIndustry(null)
                       setSelectedCity(null)
                       setQuery('')
                     }}
@@ -402,7 +402,7 @@ function SearchContent() {
                     onClick={() => {
                       setQuery('')
                       setSelectedCategory(null)
-                      setSelectedModality(null)
+                      setSelectedIndustry(null)
                       setSelectedCity(null)
                     }}
                   >

@@ -26,7 +26,7 @@ SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
 SMTP_USER=your_email@gmail.com
 SMTP_PASS=your_password
-SMTP_FROM=noreply@directoriosena.com
+SMTP_FROM=noreply@saludpro.net
 ```
 
 ### 3. Ejecutar el Schema SQL

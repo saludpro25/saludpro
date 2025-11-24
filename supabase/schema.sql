@@ -1,6 +1,7 @@
 -- ============================================
--- DIRECTORIO SENA - SCHEMA SQL
--- Sistema de Gestión de Empresas con URLs Personalizadas
+-- DIRECTORIO SALUDPRO - SCHEMA SQL COMPLETO
+-- Sistema de Gestión de Perfiles de Salud con URLs Personalizadas
+-- Fecha: 2025-11-23
 -- ============================================
 
 -- Enable UUID extension
@@ -8,20 +9,21 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- ============================================
 -- TABLA: companies
--- Almacena toda la información de las empresas
+-- Almacena toda la información de perfiles profesionales
 -- ============================================
-CREATE TABLE companies (
+CREATE TABLE IF NOT EXISTS companies (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
   
   -- Datos básicos
-  slug VARCHAR(100) UNIQUE NOT NULL, -- URL personalizada (ej: "vitro")
+  slug VARCHAR(100) UNIQUE NOT NULL,
   company_name VARCHAR(255) NOT NULL,
-  category VARCHAR(100) NOT NULL, -- 'egresado', 'empresa', 'instructor'
+  category VARCHAR(100) NOT NULL CHECK (category IN ('especialista-salud', 'centro-medico', 'agente-digitalizador')),
   
   -- Información de contacto
   email VARCHAR(255) NOT NULL,
   phone VARCHAR(50),
+  whatsapp VARCHAR(50),
   website VARCHAR(255),
   
   -- Ubicación
@@ -36,21 +38,30 @@ CREATE TABLE companies (
   
   -- Información adicional
   year_founded INTEGER,
-  employee_count VARCHAR(50), -- '1-10', '11-50', '51-200', '200+'
+  employee_count VARCHAR(50),
   industry VARCHAR(100),
   
   -- Estado y visibilidad
   is_active BOOLEAN DEFAULT true,
   is_verified BOOLEAN DEFAULT false,
-  visibility VARCHAR(20) DEFAULT 'public', -- 'public', 'private', 'draft'
+  visibility VARCHAR(20) DEFAULT 'public' CHECK (visibility IN ('public', 'private', 'draft')),
   
   -- Metadatos
   views_count INTEGER DEFAULT 0,
-  profile_completeness INTEGER DEFAULT 0, -- 0-100%
+  profile_completeness INTEGER DEFAULT 0,
   
-  -- Personalización de ficha
-  theme_color VARCHAR(7) DEFAULT '#2F4D2A', -- Color principal en formato HEX
-  theme_style VARCHAR(20) DEFAULT 'modern', -- 'modern', 'classic', 'minimal', 'bold', 'elegant'
+  -- Personalización
+  theme_color VARCHAR(7) DEFAULT '#40a356',
+  theme_style VARCHAR(20) DEFAULT 'modern',
+  custom_color VARCHAR(7) DEFAULT '#40a356',
+  selected_theme VARCHAR(50) DEFAULT 'saludpro-green',
+  
+  -- Multimedia
+  youtube_video_url TEXT,
+  
+  -- Información del emprendedor/profesional
+  entrepreneur_name VARCHAR(255),
+  entrepreneur_image_url TEXT,
   
   -- Timestamps
   created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW()),
@@ -62,18 +73,25 @@ CREATE TABLE companies (
 );
 
 -- Índices para optimizar búsquedas
-CREATE INDEX idx_companies_slug ON companies(slug);
-CREATE INDEX idx_companies_user_id ON companies(user_id);
-CREATE INDEX idx_companies_category ON companies(category);
-CREATE INDEX idx_companies_city ON companies(city);
-CREATE INDEX idx_companies_is_active ON companies(is_active);
-CREATE INDEX idx_companies_created_at ON companies(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_companies_slug ON companies(slug);
+CREATE INDEX IF NOT EXISTS idx_companies_user_id ON companies(user_id);
+CREATE INDEX IF NOT EXISTS idx_companies_category ON companies(category);
+CREATE INDEX IF NOT EXISTS idx_companies_city ON companies(city);
+CREATE INDEX IF NOT EXISTS idx_companies_is_active ON companies(is_active);
+CREATE INDEX IF NOT EXISTS idx_companies_created_at ON companies(created_at DESC);
+
+-- Comentario de documentación
+COMMENT ON TABLE companies IS 'Tabla principal que almacena perfiles de especialistas en salud, centros médicos y agentes digitalizadores del Directorio SaludPro';
+COMMENT ON COLUMN companies.category IS 'Categoría del perfil: especialista-salud (profesionales independientes), centro-medico (clínicas y centros), agente-digitalizador (proveedores de servicios digitales)';
+COMMENT ON COLUMN companies.youtube_video_url IS 'URL completa del video de YouTube para mostrar en la ficha pública';
+COMMENT ON COLUMN companies.entrepreneur_name IS 'Nombre del emprendedor o fundador de la empresa';
+COMMENT ON COLUMN companies.entrepreneur_image_url IS 'URL de la imagen del emprendedor almacenada en Supabase Storage';
 
 -- ============================================
 -- TABLA: social_links
 -- Almacena los enlaces a redes sociales de cada empresa
 -- ============================================
-CREATE TABLE social_links (
+CREATE TABLE IF NOT EXISTS social_links (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   company_id UUID REFERENCES companies(id) ON DELETE CASCADE NOT NULL,
   
@@ -91,14 +109,14 @@ CREATE TABLE social_links (
 );
 
 -- Índices
-CREATE INDEX idx_social_links_company_id ON social_links(company_id);
-CREATE INDEX idx_social_links_platform ON social_links(platform);
+CREATE INDEX IF NOT EXISTS idx_social_links_company_id ON social_links(company_id);
+CREATE INDEX IF NOT EXISTS idx_social_links_platform ON social_links(platform);
 
 -- ============================================
 -- TABLA: company_images
 -- Almacena referencias a las imágenes (logo, portada, galería)
 -- ============================================
-CREATE TABLE company_images (
+CREATE TABLE IF NOT EXISTS company_images (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   company_id UUID REFERENCES companies(id) ON DELETE CASCADE NOT NULL,
   
@@ -119,14 +137,14 @@ CREATE TABLE company_images (
 );
 
 -- Índices
-CREATE INDEX idx_company_images_company_id ON company_images(company_id);
-CREATE INDEX idx_company_images_type ON company_images(image_type);
+CREATE INDEX IF NOT EXISTS idx_company_images_company_id ON company_images(company_id);
+CREATE INDEX IF NOT EXISTS idx_company_images_type ON company_images(image_type);
 
 -- ============================================
 -- TABLA: company_stats
 -- Estadísticas y métricas de cada empresa
 -- ============================================
-CREATE TABLE company_stats (
+CREATE TABLE IF NOT EXISTS company_stats (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   company_id UUID REFERENCES companies(id) ON DELETE CASCADE UNIQUE NOT NULL,
   
@@ -142,13 +160,13 @@ CREATE TABLE company_stats (
 );
 
 -- Índice
-CREATE INDEX idx_company_stats_company_id ON company_stats(company_id);
+CREATE INDEX IF NOT EXISTS idx_company_stats_company_id ON company_stats(company_id);
 
 -- ============================================
 -- TABLA: slug_history
 -- Mantiene un historial de slugs para redirecciones
 -- ============================================
-CREATE TABLE slug_history (
+CREATE TABLE IF NOT EXISTS slug_history (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   company_id UUID REFERENCES companies(id) ON DELETE CASCADE NOT NULL,
   old_slug VARCHAR(100) NOT NULL,
@@ -157,8 +175,196 @@ CREATE TABLE slug_history (
 );
 
 -- Índice
-CREATE INDEX idx_slug_history_old_slug ON slug_history(old_slug);
-CREATE INDEX idx_slug_history_company_id ON slug_history(company_id);
+CREATE INDEX IF NOT EXISTS idx_slug_history_old_slug ON slug_history(old_slug);
+CREATE INDEX IF NOT EXISTS idx_slug_history_company_id ON slug_history(company_id);
+
+-- ============================================
+-- TABLA: business_hours
+-- Horarios de atención de cada empresa
+-- ============================================
+CREATE TABLE IF NOT EXISTS business_hours (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  company_id UUID REFERENCES companies(id) ON DELETE CASCADE NOT NULL,
+  
+  -- Día de la semana (0 = Domingo, 6 = Sábado)
+  day_of_week INTEGER NOT NULL CHECK (day_of_week >= 0 AND day_of_week <= 6),
+  
+  -- Horarios
+  opens_at TIME,
+  closes_at TIME,
+  
+  -- Flags
+  is_closed BOOLEAN DEFAULT false,
+  is_24_hours BOOLEAN DEFAULT false,
+  
+  -- Timestamps
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW()),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW()),
+  
+  -- Constraint: un solo horario por día por empresa
+  UNIQUE(company_id, day_of_week)
+);
+
+-- Índice
+CREATE INDEX IF NOT EXISTS idx_business_hours_company_id ON business_hours(company_id);
+
+-- ============================================
+-- TABLA: products
+-- Productos/servicios ofrecidos por cada empresa
+-- ============================================
+CREATE TABLE IF NOT EXISTS products (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  company_id UUID REFERENCES companies(id) ON DELETE CASCADE NOT NULL,
+  
+  -- Información del producto
+  name VARCHAR(255) NOT NULL,
+  description TEXT,
+  price DECIMAL(10, 2) NOT NULL,
+  currency VARCHAR(3) DEFAULT 'COP',
+  
+  -- Imágenes
+  image_url TEXT,
+  images JSONB DEFAULT '[]'::jsonb,
+  
+  -- Categorización
+  category VARCHAR(100),
+  tags TEXT[],
+  
+  -- Inventario
+  stock_quantity INTEGER DEFAULT 0,
+  sku VARCHAR(100),
+  
+  -- Estado
+  is_active BOOLEAN DEFAULT true,
+  is_featured BOOLEAN DEFAULT false,
+  
+  -- Opciones
+  has_variations BOOLEAN DEFAULT false,
+  variations JSONB DEFAULT '[]'::jsonb,
+  
+  -- Métricas
+  views_count INTEGER DEFAULT 0,
+  clicks_count INTEGER DEFAULT 0,
+  sales_count INTEGER DEFAULT 0,
+  
+  -- Ordenamiento
+  display_order INTEGER DEFAULT 0,
+  
+  -- Timestamps
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW()),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW())
+);
+
+-- Índices
+CREATE INDEX IF NOT EXISTS idx_products_company_id ON products(company_id);
+CREATE INDEX IF NOT EXISTS idx_products_is_active ON products(is_active);
+CREATE INDEX IF NOT EXISTS idx_products_category ON products(category);
+CREATE INDEX IF NOT EXISTS idx_products_display_order ON products(display_order);
+
+-- ============================================
+-- TABLA: blogs
+-- Artículos/blogs de cada empresa
+-- ============================================
+CREATE TABLE IF NOT EXISTS blogs (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  company_id UUID REFERENCES companies(id) ON DELETE CASCADE NOT NULL,
+  
+  -- Información del blog
+  title TEXT NOT NULL,
+  slug TEXT NOT NULL,
+  excerpt TEXT,
+  author TEXT NOT NULL,
+  cover_image TEXT,
+  content_path TEXT NOT NULL,
+  
+  -- Estado
+  is_published BOOLEAN DEFAULT false,
+  published_at TIMESTAMP WITH TIME ZONE,
+  
+  -- Métricas
+  views INTEGER DEFAULT 0,
+  
+  -- Timestamps
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW()),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW()),
+  
+  -- Constraint
+  UNIQUE(company_id, slug)
+);
+
+-- Índices
+CREATE INDEX IF NOT EXISTS idx_blogs_company_id ON blogs(company_id);
+CREATE INDEX IF NOT EXISTS idx_blogs_slug ON blogs(slug);
+CREATE INDEX IF NOT EXISTS idx_blogs_published ON blogs(is_published, published_at DESC);
+
+-- ============================================
+-- TABLA: reviews
+-- Reseñas y calificaciones de empresas
+-- ============================================
+CREATE TABLE IF NOT EXISTS reviews (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  company_id UUID REFERENCES companies(id) ON DELETE CASCADE NOT NULL,
+  user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL, -- NULL = reseña anónima
+  
+  -- Información de la reseña
+  author_name VARCHAR(100) NOT NULL,
+  author_email VARCHAR(255) NOT NULL,
+  
+  -- Contenido
+  title VARCHAR(200) NOT NULL,
+  comment TEXT NOT NULL,
+  rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
+  
+  -- Estado
+  is_approved BOOLEAN DEFAULT false,
+  is_featured BOOLEAN DEFAULT false,
+  
+  -- Respuesta del propietario
+  owner_response TEXT,
+  owner_response_at TIMESTAMP WITH TIME ZONE,
+  
+  -- Metadatos
+  helpful_count INTEGER DEFAULT 0,
+  
+  -- Timestamps
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW()),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW())
+);
+
+-- Índices
+CREATE INDEX IF NOT EXISTS idx_reviews_company_id ON reviews(company_id);
+CREATE INDEX IF NOT EXISTS idx_reviews_user_id ON reviews(user_id);
+CREATE INDEX IF NOT EXISTS idx_reviews_is_approved ON reviews(is_approved);
+CREATE INDEX IF NOT EXISTS idx_reviews_rating ON reviews(rating);
+CREATE INDEX IF NOT EXISTS idx_reviews_created_at ON reviews(created_at DESC);
+
+-- ============================================
+-- TABLA: review_reports
+-- Reportes de reseñas inapropiadas
+-- ============================================
+CREATE TABLE IF NOT EXISTS review_reports (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  review_id UUID REFERENCES reviews(id) ON DELETE CASCADE NOT NULL,
+  reporter_user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+  
+  -- Información del reporte
+  reason VARCHAR(50) NOT NULL,
+  comment TEXT,
+  
+  -- Estado
+  status VARCHAR(20) DEFAULT 'pending',
+  
+  -- Timestamps
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW()),
+  resolved_at TIMESTAMP WITH TIME ZONE,
+  
+  -- Constraint: un usuario solo puede reportar una reseña una vez
+  UNIQUE(review_id, reporter_user_id)
+);
+
+-- Índice
+CREATE INDEX IF NOT EXISTS idx_review_reports_review_id ON review_reports(review_id);
+CREATE INDEX IF NOT EXISTS idx_review_reports_status ON review_reports(status);
 
 -- ============================================
 -- ROW LEVEL SECURITY (RLS) POLICIES
@@ -170,34 +376,40 @@ ALTER TABLE social_links ENABLE ROW LEVEL SECURITY;
 ALTER TABLE company_images ENABLE ROW LEVEL SECURITY;
 ALTER TABLE company_stats ENABLE ROW LEVEL SECURITY;
 ALTER TABLE slug_history ENABLE ROW LEVEL SECURITY;
+ALTER TABLE business_hours ENABLE ROW LEVEL SECURITY;
+ALTER TABLE products ENABLE ROW LEVEL SECURITY;
+ALTER TABLE blogs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE reviews ENABLE ROW LEVEL SECURITY;
+ALTER TABLE review_reports ENABLE ROW LEVEL SECURITY;
 
 -- Políticas para companies
--- Lectura pública para empresas activas
+DROP POLICY IF EXISTS "Companies are viewable by everyone when active" ON companies;
 CREATE POLICY "Companies are viewable by everyone when active" 
 ON companies FOR SELECT 
 USING (is_active = true AND visibility = 'public');
 
--- Los usuarios pueden ver sus propias empresas
+DROP POLICY IF EXISTS "Users can view own companies" ON companies;
 CREATE POLICY "Users can view own companies" 
 ON companies FOR SELECT 
 USING (auth.uid() = user_id);
 
--- Los usuarios pueden crear sus propias empresas
+DROP POLICY IF EXISTS "Users can create own companies" ON companies;
 CREATE POLICY "Users can create own companies" 
 ON companies FOR INSERT 
 WITH CHECK (auth.uid() = user_id);
 
--- Los usuarios pueden actualizar sus propias empresas
+DROP POLICY IF EXISTS "Users can update own companies" ON companies;
 CREATE POLICY "Users can update own companies" 
 ON companies FOR UPDATE 
 USING (auth.uid() = user_id);
 
--- Los usuarios pueden eliminar sus propias empresas
+DROP POLICY IF EXISTS "Users can delete own companies" ON companies;
 CREATE POLICY "Users can delete own companies" 
 ON companies FOR DELETE 
 USING (auth.uid() = user_id);
 
 -- Políticas para social_links
+DROP POLICY IF EXISTS "Social links are viewable by everyone" ON social_links;
 CREATE POLICY "Social links are viewable by everyone" 
 ON social_links FOR SELECT 
 USING (
@@ -209,6 +421,7 @@ USING (
   )
 );
 
+DROP POLICY IF EXISTS "Users can manage own social links" ON social_links;
 CREATE POLICY "Users can manage own social links" 
 ON social_links FOR ALL 
 USING (
@@ -220,6 +433,7 @@ USING (
 );
 
 -- Políticas para company_images
+DROP POLICY IF EXISTS "Images are viewable by everyone" ON company_images;
 CREATE POLICY "Images are viewable by everyone" 
 ON company_images FOR SELECT 
 USING (
@@ -231,6 +445,7 @@ USING (
   )
 );
 
+DROP POLICY IF EXISTS "Users can manage own images" ON company_images;
 CREATE POLICY "Users can manage own images" 
 ON company_images FOR ALL 
 USING (
@@ -242,6 +457,7 @@ USING (
 );
 
 -- Políticas para company_stats
+DROP POLICY IF EXISTS "Stats are viewable by company owner" ON company_stats;
 CREATE POLICY "Stats are viewable by company owner" 
 ON company_stats FOR SELECT 
 USING (
@@ -252,9 +468,129 @@ USING (
   )
 );
 
+DROP POLICY IF EXISTS "Stats can be updated by anyone (for view counting)" ON company_stats;
 CREATE POLICY "Stats can be updated by anyone (for view counting)" 
 ON company_stats FOR UPDATE 
 USING (true);
+
+-- Políticas para business_hours
+DROP POLICY IF EXISTS "Business hours are viewable by everyone" ON business_hours;
+CREATE POLICY "Business hours are viewable by everyone" 
+ON business_hours FOR SELECT 
+USING (
+  EXISTS (
+    SELECT 1 FROM companies 
+    WHERE companies.id = business_hours.company_id 
+    AND companies.is_active = true 
+    AND companies.visibility = 'public'
+  )
+);
+
+DROP POLICY IF EXISTS "Users can manage own business hours" ON business_hours;
+CREATE POLICY "Users can manage own business hours" 
+ON business_hours FOR ALL 
+USING (
+  EXISTS (
+    SELECT 1 FROM companies 
+    WHERE companies.id = business_hours.company_id 
+    AND companies.user_id = auth.uid()
+  )
+);
+
+-- Políticas para products
+DROP POLICY IF EXISTS "Productos activos son públicos" ON products;
+CREATE POLICY "Productos activos son públicos"
+ON products FOR SELECT
+USING (is_active = true);
+
+DROP POLICY IF EXISTS "Usuarios gestionan sus productos" ON products;
+CREATE POLICY "Usuarios gestionan sus productos"
+ON products FOR ALL
+USING (
+  company_id IN (
+    SELECT id FROM companies WHERE user_id = auth.uid()
+  )
+);
+
+-- Políticas para blogs
+DROP POLICY IF EXISTS "Anyone can view published blogs" ON blogs;
+CREATE POLICY "Anyone can view published blogs"
+ON blogs FOR SELECT
+USING (is_published = true);
+
+DROP POLICY IF EXISTS "Company owners can view own blogs" ON blogs;
+CREATE POLICY "Company owners can view own blogs"
+ON blogs FOR SELECT
+USING (
+  company_id IN (
+    SELECT id FROM companies WHERE user_id = auth.uid()
+  )
+);
+
+DROP POLICY IF EXISTS "Company owners can insert own blogs" ON blogs;
+CREATE POLICY "Company owners can insert own blogs"
+ON blogs FOR INSERT
+WITH CHECK (
+  company_id IN (
+    SELECT id FROM companies WHERE user_id = auth.uid()
+  )
+);
+
+DROP POLICY IF EXISTS "Company owners can update own blogs" ON blogs;
+CREATE POLICY "Company owners can update own blogs"
+ON blogs FOR UPDATE
+USING (
+  company_id IN (
+    SELECT id FROM companies WHERE user_id = auth.uid()
+  )
+);
+
+DROP POLICY IF EXISTS "Company owners can delete own blogs" ON blogs;
+CREATE POLICY "Company owners can delete own blogs"
+ON blogs FOR DELETE
+USING (
+  company_id IN (
+    SELECT id FROM companies WHERE user_id = auth.uid()
+  )
+);
+
+-- Políticas para reviews
+DROP POLICY IF EXISTS "Approved reviews are viewable by everyone" ON reviews;
+CREATE POLICY "Approved reviews are viewable by everyone" 
+ON reviews FOR SELECT 
+USING (is_approved = true);
+
+DROP POLICY IF EXISTS "Users can view own reviews" ON reviews;
+CREATE POLICY "Users can view own reviews" 
+ON reviews FOR SELECT 
+USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Authenticated users can create reviews" ON reviews;
+CREATE POLICY "Authenticated users can create reviews" 
+ON reviews FOR INSERT 
+WITH CHECK (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Users can update own reviews" ON reviews;
+CREATE POLICY "Users can update own reviews" 
+ON reviews FOR UPDATE 
+USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Company owners can respond to reviews" ON reviews;
+CREATE POLICY "Company owners can respond to reviews" 
+ON reviews FOR UPDATE 
+USING (
+  EXISTS (
+    SELECT 1 FROM companies 
+    WHERE companies.id = reviews.company_id 
+    AND companies.user_id = auth.uid()
+  )
+);
+
+-- Políticas para review_reports
+DROP POLICY IF EXISTS "Users can create review reports" ON review_reports;
+CREATE POLICY "Users can create review reports" 
+ON review_reports FOR INSERT 
+WITH CHECK (auth.uid() = reporter_user_id);
 
 -- ============================================
 -- FUNCIONES Y TRIGGERS
@@ -270,10 +606,28 @@ END;
 $$ language 'plpgsql';
 
 -- Triggers para updated_at
+DROP TRIGGER IF EXISTS update_companies_updated_at ON companies;
 CREATE TRIGGER update_companies_updated_at BEFORE UPDATE ON companies
   FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_social_links_updated_at ON social_links;
 CREATE TRIGGER update_social_links_updated_at BEFORE UPDATE ON social_links
+  FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
+
+DROP TRIGGER IF EXISTS update_business_hours_updated_at ON business_hours;
+CREATE TRIGGER update_business_hours_updated_at BEFORE UPDATE ON business_hours
+  FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
+
+DROP TRIGGER IF EXISTS update_products_updated_at_trigger ON products;
+CREATE TRIGGER update_products_updated_at_trigger BEFORE UPDATE ON products
+  FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
+
+DROP TRIGGER IF EXISTS blogs_updated_at ON blogs;
+CREATE TRIGGER blogs_updated_at BEFORE UPDATE ON blogs
+  FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
+
+DROP TRIGGER IF EXISTS update_reviews_updated_at ON reviews;
+CREATE TRIGGER update_reviews_updated_at BEFORE UPDATE ON reviews
   FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
 
 -- Función para verificar slug único
@@ -286,7 +640,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
--- Función para generar slug desde nombre de empresa
+-- Función para generar slug desde nombre
 CREATE OR REPLACE FUNCTION generate_slug_from_name(company_name_input VARCHAR)
 RETURNS VARCHAR AS $$
 DECLARE
@@ -294,16 +648,12 @@ DECLARE
   final_slug VARCHAR;
   counter INTEGER := 1;
 BEGIN
-  -- Convertir a minúsculas, reemplazar espacios y caracteres especiales
   base_slug := LOWER(REGEXP_REPLACE(company_name_input, '[^a-zA-Z0-9]+', '-', 'g'));
   base_slug := TRIM(BOTH '-' FROM base_slug);
-  
-  -- Limitar longitud
   base_slug := SUBSTRING(base_slug, 1, 80);
   
   final_slug := base_slug;
   
-  -- Si ya existe, agregar número
   WHILE NOT check_slug_availability(final_slug) LOOP
     final_slug := base_slug || '-' || counter;
     counter := counter + 1;
@@ -325,7 +675,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Trigger para registrar cambios de slug
+DROP TRIGGER IF EXISTS track_slug_changes ON companies;
 CREATE TRIGGER track_slug_changes
 AFTER UPDATE ON companies
 FOR EACH ROW
@@ -338,16 +688,13 @@ RETURNS void AS $$
 DECLARE
   company_uuid UUID;
 BEGIN
-  -- Obtener el ID de la empresa
   SELECT id INTO company_uuid FROM companies WHERE slug = company_slug;
   
   IF company_uuid IS NOT NULL THEN
-    -- Actualizar contador en companies
     UPDATE companies 
     SET views_count = views_count + 1 
     WHERE id = company_uuid;
     
-    -- Actualizar o insertar en company_stats
     INSERT INTO company_stats (company_id, total_views, last_view_at)
     VALUES (company_uuid, 1, NOW())
     ON CONFLICT (company_id) 
@@ -358,52 +705,29 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
--- ============================================
--- STORAGE BUCKET CONFIGURATION
--- Ejecutar estos comandos en el dashboard de Supabase Storage
--- ============================================
-
--- Crear bucket principal (ejecutar desde el dashboard de Supabase):
--- Nombre del bucket: "directorio_sena" (público)
-
--- Estructura de carpetas dentro del bucket:
--- directorio_sena/
--- ├── logos/
--- ├── covers/
--- └── gallery/
-
--- Políticas de storage para el bucket "directorio_sena":
-
--- Lectura pública:
--- CREATE POLICY "Public Access" ON storage.objects FOR SELECT 
--- USING (bucket_id = 'directorio_sena');
-
--- Escritura solo para usuarios autenticados:
--- CREATE POLICY "Authenticated users can upload" ON storage.objects FOR INSERT 
--- WITH CHECK (bucket_id = 'directorio_sena' AND auth.role() = 'authenticated');
-
--- Actualización solo del propietario:
--- CREATE POLICY "Users can update own files" ON storage.objects FOR UPDATE 
--- USING (bucket_id = 'directorio_sena' AND auth.uid()::text = (storage.foldername(name))[1]);
-
--- Eliminación solo del propietario:
--- CREATE POLICY "Users can delete own files" ON storage.objects FOR DELETE 
--- USING (bucket_id = 'directorio_sena' AND auth.uid()::text = (storage.foldername(name))[1]);
-
--- ============================================
--- DATOS DE EJEMPLO (OPCIONAL)
--- ============================================
-
--- Insertar categorías de ejemplo
--- Puedes crear una tabla adicional para categorías si lo deseas
-
--- ============================================
--- ÍNDICES ADICIONALES PARA BÚSQUEDA
--- ============================================
-
--- Índice para búsqueda de texto completo
-CREATE INDEX idx_companies_search ON companies 
-USING gin(to_tsvector('spanish', company_name || ' ' || COALESCE(description, '')));
+-- Función para calcular promedio de calificación
+CREATE OR REPLACE FUNCTION calculate_company_rating(company_uuid UUID)
+RETURNS TABLE (
+  average_rating NUMERIC,
+  total_reviews BIGINT,
+  rating_distribution JSONB
+) AS $$
+BEGIN
+  RETURN QUERY
+  SELECT 
+    ROUND(AVG(rating), 1) as average_rating,
+    COUNT(*) as total_reviews,
+    jsonb_build_object(
+      '5', COUNT(*) FILTER (WHERE rating = 5),
+      '4', COUNT(*) FILTER (WHERE rating = 4),
+      '3', COUNT(*) FILTER (WHERE rating = 3),
+      '2', COUNT(*) FILTER (WHERE rating = 2),
+      '1', COUNT(*) FILTER (WHERE rating = 1)
+    ) as rating_distribution
+  FROM reviews
+  WHERE company_id = company_uuid AND is_approved = true;
+END;
+$$ LANGUAGE plpgsql;
 
 -- Función de búsqueda
 CREATE OR REPLACE FUNCTION search_companies(search_query TEXT)
@@ -439,198 +763,46 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- ============================================
--- TABLA: business_hours
--- Horarios de atención de cada empresa
+-- ÍNDICE DE BÚSQUEDA DE TEXTO COMPLETO
 -- ============================================
-CREATE TABLE business_hours (
-  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-  company_id UUID REFERENCES companies(id) ON DELETE CASCADE NOT NULL,
-  
-  -- Día de la semana (0 = Domingo, 6 = Sábado)
-  day_of_week INTEGER NOT NULL CHECK (day_of_week >= 0 AND day_of_week <= 6),
-  
-  -- Horarios
-  opens_at TIME, -- NULL = cerrado ese día
-  closes_at TIME,
-  
-  -- Flags
-  is_closed BOOLEAN DEFAULT false, -- true = cerrado ese día
-  is_24_hours BOOLEAN DEFAULT false, -- true = abierto 24 horas
-  
-  -- Timestamps
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW()),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW()),
-  
-  -- Constraint: un solo horario por día por empresa
-  UNIQUE(company_id, day_of_week)
+CREATE INDEX IF NOT EXISTS idx_companies_search ON companies 
+USING gin(to_tsvector('spanish', company_name || ' ' || COALESCE(description, '')));
+
+-- ============================================
+-- STORAGE BUCKETS Y POLÍTICAS
+-- ============================================
+
+-- Crear bucket blog-content si no existe
+INSERT INTO storage.buckets (id, name, public)
+VALUES ('blog-content', 'blog-content', true)
+ON CONFLICT (id) DO NOTHING;
+
+-- Políticas de storage para blog-content
+DROP POLICY IF EXISTS "Anyone can view blog content" ON storage.objects;
+CREATE POLICY "Anyone can view blog content"
+ON storage.objects FOR SELECT
+USING (bucket_id = 'blog-content');
+
+DROP POLICY IF EXISTS "Authenticated users can upload blog content" ON storage.objects;
+CREATE POLICY "Authenticated users can upload blog content"
+ON storage.objects FOR INSERT
+WITH CHECK (
+  bucket_id = 'blog-content' AND
+  auth.role() = 'authenticated'
 );
 
--- Índice
-CREATE INDEX idx_business_hours_company_id ON business_hours(company_id);
-
--- RLS para business_hours
-ALTER TABLE business_hours ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY "Business hours are viewable by everyone" 
-ON business_hours FOR SELECT 
+DROP POLICY IF EXISTS "Authenticated users can update blog content" ON storage.objects;
+CREATE POLICY "Authenticated users can update blog content"
+ON storage.objects FOR UPDATE
 USING (
-  EXISTS (
-    SELECT 1 FROM companies 
-    WHERE companies.id = business_hours.company_id 
-    AND companies.is_active = true 
-    AND companies.visibility = 'public'
-  )
+  bucket_id = 'blog-content' AND
+  auth.role() = 'authenticated'
 );
 
-CREATE POLICY "Users can manage own business hours" 
-ON business_hours FOR ALL 
+DROP POLICY IF EXISTS "Authenticated users can delete blog content" ON storage.objects;
+CREATE POLICY "Authenticated users can delete blog content"
+ON storage.objects FOR DELETE
 USING (
-  EXISTS (
-    SELECT 1 FROM companies 
-    WHERE companies.id = business_hours.company_id 
-    AND companies.user_id = auth.uid()
-  )
+  bucket_id = 'blog-content' AND
+  auth.role() = 'authenticated'
 );
-
--- Trigger para updated_at
-CREATE TRIGGER update_business_hours_updated_at BEFORE UPDATE ON business_hours
-  FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
-
--- ============================================
--- TABLA: reviews
--- Reseñas y calificaciones de empresas
--- ============================================
-CREATE TABLE reviews (
-  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-  company_id UUID REFERENCES companies(id) ON DELETE CASCADE NOT NULL,
-  user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL, -- NULL = reseña anónima
-  
-  -- Información de la reseña
-  author_name VARCHAR(100) NOT NULL,
-  author_email VARCHAR(255) NOT NULL,
-  
-  -- Contenido
-  title VARCHAR(200) NOT NULL,
-  comment TEXT NOT NULL,
-  rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
-  
-  -- Estado
-  is_approved BOOLEAN DEFAULT false,
-  is_featured BOOLEAN DEFAULT false,
-  
-  -- Respuesta del propietario
-  owner_response TEXT,
-  owner_response_at TIMESTAMP WITH TIME ZONE,
-  
-  -- Metadatos
-  helpful_count INTEGER DEFAULT 0,
-  
-  -- Timestamps
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW()),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW())
-);
-
--- Índices
-CREATE INDEX idx_reviews_company_id ON reviews(company_id);
-CREATE INDEX idx_reviews_user_id ON reviews(user_id);
-CREATE INDEX idx_reviews_is_approved ON reviews(is_approved);
-CREATE INDEX idx_reviews_rating ON reviews(rating);
-CREATE INDEX idx_reviews_created_at ON reviews(created_at DESC);
-
--- RLS para reviews
-ALTER TABLE reviews ENABLE ROW LEVEL SECURITY;
-
--- Ver reseñas aprobadas
-CREATE POLICY "Approved reviews are viewable by everyone" 
-ON reviews FOR SELECT 
-USING (is_approved = true);
-
--- Ver propias reseñas
-CREATE POLICY "Users can view own reviews" 
-ON reviews FOR SELECT 
-USING (auth.uid() = user_id);
-
--- Crear reseñas (autenticados)
-CREATE POLICY "Authenticated users can create reviews" 
-ON reviews FOR INSERT 
-WITH CHECK (auth.uid() = user_id);
-
--- Actualizar propias reseñas
-CREATE POLICY "Users can update own reviews" 
-ON reviews FOR UPDATE 
-USING (auth.uid() = user_id);
-
--- Propietarios de empresas pueden responder
-CREATE POLICY "Company owners can respond to reviews" 
-ON reviews FOR UPDATE 
-USING (
-  EXISTS (
-    SELECT 1 FROM companies 
-    WHERE companies.id = reviews.company_id 
-    AND companies.user_id = auth.uid()
-  )
-);
-
--- Trigger para updated_at
-CREATE TRIGGER update_reviews_updated_at BEFORE UPDATE ON reviews
-  FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
-
--- Función para calcular promedio de calificación
-CREATE OR REPLACE FUNCTION calculate_company_rating(company_uuid UUID)
-RETURNS TABLE (
-  average_rating NUMERIC,
-  total_reviews BIGINT,
-  rating_distribution JSONB
-) AS $$
-BEGIN
-  RETURN QUERY
-  SELECT 
-    ROUND(AVG(rating), 1) as average_rating,
-    COUNT(*) as total_reviews,
-    jsonb_build_object(
-      '5', COUNT(*) FILTER (WHERE rating = 5),
-      '4', COUNT(*) FILTER (WHERE rating = 4),
-      '3', COUNT(*) FILTER (WHERE rating = 3),
-      '2', COUNT(*) FILTER (WHERE rating = 2),
-      '1', COUNT(*) FILTER (WHERE rating = 1)
-    ) as rating_distribution
-  FROM reviews
-  WHERE company_id = company_uuid AND is_approved = true;
-END;
-$$ LANGUAGE plpgsql;
-
--- ============================================
--- TABLA: review_reports
--- Reportes de reseñas inapropiadas
--- ============================================
-CREATE TABLE review_reports (
-  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-  review_id UUID REFERENCES reviews(id) ON DELETE CASCADE NOT NULL,
-  reporter_user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
-  
-  -- Información del reporte
-  reason VARCHAR(50) NOT NULL, -- 'spam', 'inappropriate', 'fake', 'offensive'
-  comment TEXT,
-  
-  -- Estado
-  status VARCHAR(20) DEFAULT 'pending', -- 'pending', 'reviewed', 'dismissed'
-  
-  -- Timestamps
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW()),
-  resolved_at TIMESTAMP WITH TIME ZONE,
-  
-  -- Constraint: un usuario solo puede reportar una reseña una vez
-  UNIQUE(review_id, reporter_user_id)
-);
-
--- Índice
-CREATE INDEX idx_review_reports_review_id ON review_reports(review_id);
-CREATE INDEX idx_review_reports_status ON review_reports(status);
-
--- RLS para review_reports
-ALTER TABLE review_reports ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY "Users can create review reports" 
-ON review_reports FOR INSERT 
-WITH CHECK (auth.uid() = reporter_user_id);
-

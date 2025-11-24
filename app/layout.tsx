@@ -10,24 +10,24 @@ const onest = Onest({
 })
 
 export const metadata: Metadata = {
-  title: "Directorio Empresarial Sena | Fondo Emprender",
+  title: "SaludPro | Directorio de Profesionales de la Salud",
   description:
-    "Directorio oficial de empresas, egresados e instructores del SENA. Encuentra y conecta con emprendedores del Fondo Emprender.",
-  keywords: "SENA, Fondo Emprender, directorio empresarial, egresados SENA, empresas SENA, emprendedores Colombia",
-  authors: [{ name: "SENA" }],
+    "Directorio de especialistas en salud, centros médicos y servicios de digitalización. Encuentra profesionales de la salud cerca de ti.",
+  keywords: "SaludPro, profesionales salud, directorio médico, especialistas salud, centros médicos, telemedicina, Colombia",
+  authors: [{ name: "SaludPro" }],
   robots: "index, follow",
   openGraph: {
     type: "website",
     locale: "es_CO",
-    url: "https://www.directoriosena.com",
-    title: "Directorio Empresarial Sena | Fondo Emprender",
-    description: "Directorio oficial de empresas, egresados e instructores del SENA.",
-    siteName: "Directorio SENA",
+    url: "https://saludpro.net",
+    title: "SaludPro | Directorio de Profesionales de la Salud",
+    description: "Encuentra especialistas en salud y centros médicos cerca de ti.",
+    siteName: "SaludPro",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Directorio Empresarial Sena | Fondo Emprender",
-    description: "Directorio oficial de empresas, egresados e instructores del SENA.",
+    title: "SaludPro | Directorio de Profesionales de la Salud",
+    description: "Encuentra especialistas en salud y centros médicos cerca de ti.",
   },
   icons: {
     icon: "/favicon.ico",

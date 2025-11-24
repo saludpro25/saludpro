@@ -9,7 +9,7 @@ import { CheckCircle2, ExternalLink, Settings, Eye, Share2, Copy, Check } from "
 export default function CompanySuccessPage({ params }: { params: { slug: string } }) {
   const router = useRouter()
   const [copied, setCopied] = useState(false)
-  const companyUrl = `https://directoriosena.com/${params.slug}`
+  const companyUrl = `https://saludpro.net/${params.slug}`
 
   const handleCopyUrl = () => {
     navigator.clipboard.writeText(companyUrl)
@@ -52,7 +52,7 @@ export default function CompanySuccessPage({ params }: { params: { slug: string 
           
           <div className="inline-block bg-white rounded-xl shadow-lg border-2 border-[hsl(111,29%,23%)]/20 p-5 mb-6 hover:shadow-xl transition-shadow">
             <p className="text-xl md:text-2xl font-mono font-bold text-[hsl(111,29%,23%)]">
-              directoriosena.com/<span className="text-gray-900">{params.slug}</span>
+              saludpro.net/<span className="text-gray-900">{params.slug}</span>
             </p>
           </div>
         </div>

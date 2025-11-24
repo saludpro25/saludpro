@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Eye, EyeOff, Mail, Lock, User, GraduationCap, Users, Award, Loader2 } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, User, Heart, Users, Calendar, Loader2 } from "lucide-react";
 import { Logo } from "@/components/logo";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -106,7 +106,7 @@ const LoginRegister: React.FC<LoginRegisterProps> = ({ onSuccess }) => {
           data: {
             full_name: registerData.name,
           },
-          emailRedirectTo: `https://www.directoriosena.com/auth/callback`,
+          emailRedirectTo: `https://saludpro.net/auth/callback`,
         },
       });
 
@@ -154,7 +154,7 @@ const LoginRegister: React.FC<LoginRegisterProps> = ({ onSuccess }) => {
 
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(resetEmail, {
-        redirectTo: `https://www.directoriosena.com/auth/reset-password`,
+        redirectTo: `https://saludpro.net/auth/reset-password`,
       });
 
       if (error) throw error;
@@ -182,22 +182,22 @@ const LoginRegister: React.FC<LoginRegisterProps> = ({ onSuccess }) => {
       {/* Left side with SENA branding and information */}
       <div className="relative hidden lg:flex flex-col items-center justify-center p-8 bg-primary text-primary-foreground">
         <div className="max-w-md mx-auto text-center space-y-8">
-          {/* SENA Logo */}
+          {/* SaludPro Logo */}
           <div className="flex justify-center mb-8">
             <Image
-              src="/logos/sena_logo.svg"
-              alt="SENA Logo"
-              width={120}
-              height={120}
-              className="transition-transform duration-300 hover:scale-125 cursor-pointer"
+              src="/logos/logosaludpro2025_blanco.svg"
+              alt="SaludPro Logo"
+              width={180}
+              height={80}
+              className="transition-transform duration-300 hover:scale-105 cursor-pointer"
             />
           </div>
           
           {/* Main heading */}
           <div className="space-y-4">
-            <h2 className="text-3xl font-bold">Directorio Profesional SENA</h2>
+            <h2 className="text-3xl font-bold">Directorio SaludPro</h2>
             <p className="text-lg text-primary-foreground/80">
-              Conecta con egresados, instructores y empresas de la comunidad SENA
+              Conecta con especialistas, centros médicos y profesionales de la salud en Colombia
             </p>
           </div>
 
@@ -205,11 +205,11 @@ const LoginRegister: React.FC<LoginRegisterProps> = ({ onSuccess }) => {
           <div className="space-y-6 mt-8">
             <div className="flex items-center gap-4 text-left">
               <div className="p-3 bg-primary-foreground/20 rounded-full">
-                <GraduationCap className="h-6 w-6" />
+                <Heart className="h-6 w-6" />
               </div>
               <div>
-                <h3 className="font-semibold">Perfil Profesional</h3>
-                <p className="text-sm text-primary-foreground/80">Crea tu ficha profesional completa</p>
+                <h3 className="font-semibold">Especialistas en Salud</h3>
+                <p className="text-sm text-primary-foreground/80">Profesionales independientes de diversas áreas de la salud y el bienestar</p>
               </div>
             </div>
             
@@ -218,28 +218,20 @@ const LoginRegister: React.FC<LoginRegisterProps> = ({ onSuccess }) => {
                 <Users className="h-6 w-6" />
               </div>
               <div>
-                <h3 className="font-semibold">Red de Contactos</h3>
-                <p className="text-sm text-primary-foreground/80">Conecta con otros profesionales</p>
+                <h3 className="font-semibold">Centros Médicos</h3>
+                <p className="text-sm text-primary-foreground/80">Clínicas, consultorios, unidades de salud y centros especializados que ofrecen servicios integrales</p>
               </div>
             </div>
             
             <div className="flex items-center gap-4 text-left">
               <div className="p-3 bg-primary-foreground/20 rounded-full">
-                <Award className="h-6 w-6" />
+                <Calendar className="h-6 w-6" />
               </div>
               <div>
-                <h3 className="font-semibold">Oportunidades</h3>
-                <p className="text-sm text-primary-foreground/80">Encuentra ofertas laborales</p>
+                <h3 className="font-semibold">Agente Digitalizador</h3>
+                <p className="text-sm text-primary-foreground/80">Expertos y empresas que ofrecen soluciones: automatización IA, agenda, branding, sitios web y más</p>
               </div>
             </div>
-          </div>
-
-          {/* Dots navigation */}
-          <div className="flex justify-center gap-2 pt-8">
-            <div className="w-2 h-2 rounded-full bg-primary-foreground"></div>
-            <div className="w-2 h-2 rounded-full bg-primary-foreground/40"></div>
-            <div className="w-2 h-2 rounded-full bg-primary-foreground/40"></div>
-            <div className="w-2 h-2 rounded-full bg-primary-foreground/40"></div>
           </div>
         </div>
       </div>

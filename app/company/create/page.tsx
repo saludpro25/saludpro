@@ -8,10 +8,10 @@ export const dynamic = 'force-dynamic'
 
 export default function CreateCompanyPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[hsl(111,29%,23%)]/5 via-white to-blue-50">
+    <div className="min-h-screen bg-background">
       <Suspense fallback={
         <div className="flex items-center justify-center min-h-screen">
-          <Loader2 className="w-8 h-8 animate-spin text-green-600" />
+          <Loader2 className="w-8 h-8 animate-spin text-accent" />
         </div>
       }>
         <CompanyRegistrationFlow />

@@ -7,9 +7,9 @@ El sistema ahora incluye un flujo de registro donde cada usuario elige su **user
 ## 🔗 Ejemplo de URL Personalizada
 
 ```
-https://www.directoriosena.com/cristoferscalante
-https://www.directoriosena.com/mi-empresa
-https://www.directoriosena.com/juan-perez
+https://www.saludpro.net/cristoferscalante
+https://www.saludpro.net/mi-empresa
+https://www.saludpro.net/juan-perez
 ```
 
 ## 🚀 Flujo de Registro
@@ -67,7 +67,7 @@ Al completar el registro:
 ### 4. **Confirmación de Email**
 
 - El usuario recibe un correo de confirmación
-- Mensaje de éxito muestra: "Tu URL será: https://www.directoriosena.com/[username]"
+- Mensaje de éxito muestra: "Tu URL será: https://www.saludpro.net/[username]"
 
 ### 5. **Primera Sesión** (`/company/create`)
 
@@ -84,7 +84,7 @@ Después de confirmar el email e iniciar sesión:
 
 ```tsx
 <Input>
-  https://www.directoriosena.com/[tu-nombre]
+  https://www.saludpro.net/[tu-nombre]
   
   Estados:
   - Normal: Borde gris
@@ -99,7 +99,7 @@ Después de confirmar el email e iniciar sesión:
 - **Placeholder**: "tu-nombre"
 - **Ayuda**: "Solo letras minúsculas, números y guiones. Ej: juan-perez, mi-empresa"
 - **Error**: "Este nombre de usuario ya está en uso"
-- **Éxito**: "✓ Disponible: https://www.directoriosena.com/[username]"
+- **Éxito**: "✓ Disponible: https://www.saludpro.net/[username]"
 
 ## 🔧 Funciones Clave
 
@@ -222,4 +222,4 @@ checkSlugAvailability("juan-perez") // → true/false
 ---
 
 **Última actualización**: Octubre 29, 2025
-**Desarrollado para**: Directorio SENA - [https://www.directoriosena.com/](https://www.directoriosena.com/)
+**Desarrollado para**: Directorio SENA - [https://www.saludpro.net/](https://www.saludpro.net/)

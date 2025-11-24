@@ -190,7 +190,7 @@ export function CompanyRegistrationFlow() {
 
         // Redirigir al admin después de actualizar
         router.push('/admin')
-        alert('¡Empresa actualizada exitosamente!')
+        alert('¡Perfil actualizado exitosamente!')
         
       } else {
         // MODO CREACIÓN: Crear nueva empresa
@@ -307,7 +307,7 @@ export function CompanyRegistrationFlow() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-4 text-gray-600">Verificando autenticación...</p>
+          <p className="mt-4 text-muted-foreground">Verificando autenticación...</p>
         </div>
       </div>
     )
@@ -319,18 +319,18 @@ export function CompanyRegistrationFlow() {
         {/* Header with progress */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
-              {isEditMode ? 'Editar Empresa' : 'Crear Ficha de Empresa'}
+            <h1 className="text-3xl md:text-4xl font-bold text-primary">
+              {isEditMode ? 'Editar Perfil' : 'Crear Perfil Profesional'}
             </h1>
-            <span className="text-sm font-semibold text-[hsl(111,29%,23%)] bg-[hsl(111,29%,23%)]/10 px-4 py-2 rounded-lg">
+            <span className="text-sm font-semibold text-accent bg-accent/10 px-4 py-2 rounded-lg">
               Paso {currentStep} de {totalSteps}
             </span>
           </div>
           
           <div className="space-y-2">
-            <div className="flex justify-between text-sm font-medium text-gray-700 mb-2">
+            <div className="flex justify-between text-sm font-medium text-foreground mb-2">
               <span>{stepTitles[currentStep]}</span>
-              <span className="text-[hsl(111,29%,23%)]">{Math.round(progress)}%</span>
+              <span className="text-accent">{Math.round(progress)}%</span>
             </div>
             <Progress value={progress} className="h-3 bg-gray-200" />
           </div>
@@ -345,9 +345,9 @@ export function CompanyRegistrationFlow() {
                 <div
                   className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg shadow-md transition-all ${
                     currentStep > step
-                      ? 'bg-gradient-to-br from-[hsl(111,29%,23%)] to-[hsl(111,29%,18%)] text-white scale-110'
+                      ? 'bg-accent text-white scale-110'
                       : currentStep === step
-                      ? 'bg-gradient-to-br from-[hsl(111,29%,23%)] to-[hsl(111,29%,18%)] text-white ring-4 ring-[hsl(111,29%,23%)]/20'
+                      ? 'bg-primary text-white ring-4 ring-primary/20'
                       : 'bg-gray-200 text-gray-500'
                   }`}
                 >
@@ -360,7 +360,7 @@ export function CompanyRegistrationFlow() {
                 {step < 4 && (
                   <div
                     className={`flex-1 h-2 mx-3 rounded-full transition-all ${
-                      currentStep > step ? 'bg-gradient-to-r from-[hsl(111,29%,23%)] to-[hsl(111,29%,18%)]' : 'bg-gray-200'
+                      currentStep > step ? 'bg-accent' : 'bg-gray-200'
                     }`}
                   />
                 )}
@@ -375,8 +375,8 @@ export function CompanyRegistrationFlow() {
         </div>
 
         {/* Footer text */}
-        <div className="mt-8 text-center text-sm text-gray-600 bg-white/50 backdrop-blur rounded-lg p-4">
-          <p className="font-medium">¿Necesitas ayuda? Contáctanos en <span className="text-[hsl(111,29%,23%)] font-semibold">soporte@directoriosena.com</span></p>
+        <div className="mt-8 text-center text-sm text-muted-foreground bg-white/50 backdrop-blur rounded-lg p-4">
+          <p className="font-medium">¿Necesitas ayuda? Contáctanos en <span className="text-accent font-semibold">soporte@saludpro.net</span></p>
         </div>
       </div>
     </div>

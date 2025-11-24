@@ -62,7 +62,7 @@ export function StepReview({ formData, onBack, onSubmit, loading }: StepReviewPr
             <p className="text-sm text-gray-600 mb-2 font-medium">Tu ficha estará disponible en:</p>
             <div className="bg-white rounded-lg py-3 px-4 inline-block shadow-sm">
               <p className="text-lg font-mono font-bold text-[hsl(111,29%,23%)]">
-                directoriosena.com/<span className="text-gray-900">{formData.slug}</span>
+                saludpro.net/<span className="text-gray-900">{formData.slug}</span>
               </p>
             </div>
           </div>

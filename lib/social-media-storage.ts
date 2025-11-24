@@ -166,7 +166,7 @@ export function getSocialUrl(platform: string, socialData?: SocialMedia): string
     youtube: "https://youtube.com/",
     twitter: "https://x.com/",
     spotify: "https://spotify.com/",
-    website: "https://www.directoriosena.com/"
+    website: "https://www.saludpro.net/"
   };
 
   return fallbackUrls[platform] || "#";

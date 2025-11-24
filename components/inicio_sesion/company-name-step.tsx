@@ -97,13 +97,13 @@ const CompanyNameStep: React.FC = () => {
         {/* Header */}
         <div className="text-center space-y-4">
           <div className="flex justify-center mb-6">
-            <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center">
+            <div className="w-16 h-16 bg-accent rounded-full flex items-center justify-center">
               <Image
-                src="/logos/sena_logo.svg"
-                alt="SENA Logo"
-                width={32}
-                height={32}
-                className="transition-transform duration-300 hover:scale-110 filter brightness-0 invert"
+                src="/logos/logosaludpro2025_blanco.svg"
+                alt="SaludPro Logo"
+                width={40}
+                height={40}
+                className="transition-transform duration-300 hover:scale-110"
               />
             </div>
           </div>
@@ -111,7 +111,7 @@ const CompanyNameStep: React.FC = () => {
             ¿Cómo se llama tu empresa o perfil profesional?
           </h1>
           <p className="text-gray-600">
-            Este nombre aparecerá en tu ficha del directorio SENA y en tu URL personalizada.
+            Este nombre aparecerá en tu ficha del directorio SaludPro y en tu URL personalizada.
           </p>
         </div>
 
@@ -128,7 +128,7 @@ const CompanyNameStep: React.FC = () => {
                 <Input
                   id="company-name"
                   type="text"
-                  placeholder="Ejemplo: V1TR0"
+                  placeholder="Ejemplo: Nutricionista Verónica"
                   value={companyName}
                   onChange={(e) => setCompanyName(e.target.value)}
                   className="pl-10 bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 h-12 text-base"
@@ -148,7 +148,7 @@ const CompanyNameStep: React.FC = () => {
                 </Label>
                 <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg border border-gray-200">
                   <span className="text-sm text-gray-600">
-                    https://www.directoriosena.com/
+                    https://saludpro.net/
                   </span>
                   <span className="text-sm font-semibold text-primary">
                     {slug}

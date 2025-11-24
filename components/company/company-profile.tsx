@@ -385,13 +385,13 @@ export function CompanyProfile({ company }: CompanyProfileProps) {
             className="flex-shrink-0 cursor-pointer"
             onClick={() => (window.location.href = "/")}
           >
-            <Logo asLink={false} size="sm" />
+            <Logo asLink={false} size="sm" variant="white" />
           </div>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-8">
             <Link
-              href="https://www.directoriosena.com/search"
+              href="https://saludpro.net/search"
               className="text-white/90 hover:text-white transition-colors text-sm font-medium"
             >
               Directorio
@@ -436,7 +436,7 @@ export function CompanyProfile({ company }: CompanyProfileProps) {
         {isMenuOpen && (
           <div className="md:hidden mt-4 pb-4 px-6 space-y-3">
             <Link
-              href="https://www.directoriosena.com/search"
+              href="https://saludpro.net/search"
               className="block text-white/90 hover:text-white transition-colors text-sm font-medium py-2"
               onClick={() => setIsMenuOpen(false)}
             >

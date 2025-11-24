@@ -26,16 +26,16 @@ interface StepBasicInfoProps {
 }
 
 const categoryOptions: typeof CATEGORY_OPTIONS = [
-  { value: 'emprendimiento-egresado', label: 'Egresado con Emprendimiento', description: 'Emprendimiento de egresado del SENA' },
-  { value: 'empresa-fe', label: 'Empresa Ganadora FE', description: 'Empresa ganadora del Fondo Emprender' },
-  { value: 'agente-digitalizador', label: 'Agente Digitalizador', description: 'Agente digitalizador aprobado' },
+  { value: 'especialista-salud', label: 'Especialistas en Salud', description: 'Profesionales independientes de diversas áreas de la salud y el bienestar' },
+  { value: 'centro-medico', label: 'Centros Médicos', description: 'Clínicas, consultorios, unidades de salud y centros especializados que ofrecen servicios integrales' },
+  { value: 'agente-digitalizador', label: 'Agente Digitalizador', description: 'Expertos y empresas que ofrecen soluciones: automatización IA, agenda, branding, sitios web y más' },
 ]
 
 export function StepBasicInfo({ formData, onUpdate, onNext, isEditMode = false, currentCompanyId = null }: StepBasicInfoProps) {
   const supabase = createClient()
   const [companyName, setCompanyName] = useState(formData.company_name || "")
   const [slug, setSlug] = useState(formData.slug || "")
-  const [category, setCategory] = useState(formData.category || "empresa-fe")
+  const [category, setCategory] = useState(formData.category || "especialista-salud")
   const [shortDescription, setShortDescription] = useState(formData.short_description || "")
   
   const [checkingSlug, setCheckingSlug] = useState(false)
@@ -209,7 +209,7 @@ export function StepBasicInfo({ formData, onUpdate, onNext, isEditMode = false, 
         <div className="relative">
           <div className="flex items-center">
             <span className="inline-flex items-center px-3 py-2 border border-r-0 border-gray-300 bg-gray-100 text-gray-700 text-sm rounded-l-md font-medium">
-              directoriosena.com/
+              saludpro.net/
             </span>
             <Input
               id="slug"
@@ -251,7 +251,7 @@ export function StepBasicInfo({ formData, onUpdate, onNext, isEditMode = false, 
         )}
         
         <p className="text-sm text-gray-600">
-          Esta será tu URL única: <span className="font-mono text-primary font-semibold">directoriosena.com/{slug || 'tu-empresa'}</span>
+          Esta será tu URL única: <span className="font-mono text-primary font-semibold">saludpro.net/{slug || 'tu-empresa'}</span>
         </p>
         {isEditMode && (
           <p className="text-sm text-amber-700 bg-amber-50 px-3 py-2 rounded-md">
@@ -330,7 +330,7 @@ export function StepBasicInfo({ formData, onUpdate, onNext, isEditMode = false, 
                   {shortDescription || "Descripción corta de tu empresa..."}
                 </p>
                 <p className="text-sm text-[hsl(111,29%,23%)] mt-3 font-mono font-semibold bg-[hsl(111,29%,23%)]/5 inline-block px-3 py-1 rounded-lg">
-                  directoriosena.com/{slug || "tu-empresa"}
+                  saludpro.net/{slug || "tu-empresa"}
                 </p>
               </div>
             </div>

@@ -36,23 +36,23 @@ const CategorySelector: React.FC = () => {
 
   const categories: CategoryOption[] = [
     {
-      id: "emprendimiento-egresado",
-      title: "Egresado con Emprendimiento",
-      description: "Tengo un emprendimiento, soy egresado del SENA y busco conectar para impulsar mi proyecto.",
+      id: "especialista-salud",
+      title: "Especialistas en Salud",
+      description: "Profesionales independientes de diversas áreas de la salud y el bienestar.",
       icon: <User className="h-8 w-8" />,
       color: "bg-primary"
     },
     {
-      id: "empresa-fe",
-      title: "Empresa Ganadora FE", 
-      description: "Empresa ganadora del Fondo Emprender; busco visibilizar y digitalizar mi negocio para crecer.",
+      id: "centro-medico",
+      title: "Centros Médicos", 
+      description: "Clínicas, consultorios, unidades de salud y centros especializados que ofrecen servicios integrales.",
       icon: <Building2 className="h-8 w-8" />,
       color: "bg-primary"
     },
     {
       id: "agente-digitalizador",
       title: "Agente Digitalizador",
-      description: "Agente digitalizador aprobado; ofrezco soluciones para la transformación digital.",
+      description: "Expertos y empresas que ofrecen soluciones: automatización IA, agenda, branding, sitios web y más.",
       icon: <Briefcase className="h-8 w-8" />,
       color: "bg-primary"
     }
@@ -84,18 +84,18 @@ const CategorySelector: React.FC = () => {
         {/* Header */}
         <div className="text-center space-y-4">
           <div className="flex justify-center mb-6">
-            <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center">
+            <div className="w-16 h-16 bg-accent rounded-full flex items-center justify-center">
               <Image
-                src="/logos/sena_logo.svg"
-                alt="SENA Logo"
-                width={32}
-                height={32}
-                className="transition-transform duration-300 hover:scale-110 filter brightness-0 invert"
+                src="/logos/logosaludpro2025_blanco.svg"
+                alt="SaludPro Logo"
+                width={40}
+                height={40}
+                className="transition-transform duration-300 hover:scale-110"
               />
             </div>
           </div>
           <h1 className="text-3xl font-bold text-gray-900">
-            Selecciona el perfil que mejor representa tu actividad en el Directorio SENA.
+            Selecciona el perfil que mejor representa tu actividad en el Directorio SaludPro.
           </h1>
           <p className="text-gray-600">
             Perfil para: <span className="font-semibold text-primary">{companyName}</span>

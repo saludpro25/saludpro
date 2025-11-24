@@ -257,7 +257,7 @@ export function UserDashboard() {
     return getSocialUrl(platformId, socialMediaData);
   };
 
-  const profileUrl = `https://www.directoriosena.com/${userProfile?.username || 'usuario'}`;
+  const profileUrl = `https://saludpro.net/${userProfile?.username || 'usuario'}`;
 
   const handleCopyUrl = async () => {
     try {

@@ -14,13 +14,13 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
   if (!company) {
     return {
-      title: 'Empresa no encontrada - Directorio SENA',
+      title: 'Perfil no encontrado - Directorio SaludPro',
     }
   }
 
   return {
-    title: `${company.company_name} - Directorio SENA`,
-    description: company.short_description || `Conoce más sobre ${company.company_name} en el Directorio SENA`,
+    title: `${company.company_name} - Directorio SaludPro`,
+    description: company.short_description || `Conoce más sobre ${company.company_name} en el Directorio SaludPro`,
     openGraph: {
       title: company.company_name,
       description: company.short_description,
@@ -39,8 +39,7 @@ export default async function CompanyPage({ params }: { params: { slug: string }
       *,
       social_links (*),
       company_images (*),
-      company_stats (*),
-      products (*)
+      company_stats (*)
     `)
     .eq('slug', params.slug)
     .eq('is_active', true)
@@ -48,15 +47,17 @@ export default async function CompanyPage({ params }: { params: { slug: string }
     .single()
 
   if (error || !company) {
+    console.error('Error loading company:', error)
     notFound()
   }
 
-  // Increment view count (non-blocking)
-  supabase.rpc('increment_company_views', { company_slug: params.slug }).then()
-
+  // Format data for CompanyProfile component
   const companyData: CompanyWithRelations = {
     ...company,
-    company_stats: company.company_stats?.[0] || null
+    social_links: company.social_links || [],
+    company_images: company.company_images || [],
+    company_stats: company.company_stats?.[0] || null,
+    products: [] // Empty array since we don't have products table
   }
 
   return <CompanyProfile company={companyData} />

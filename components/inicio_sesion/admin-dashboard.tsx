@@ -119,7 +119,7 @@ export function AdminDashboard() {
   });
   const [uploadingProductImage, setUploadingProductImage] = useState(false);
   const [selectedTheme, setSelectedTheme] = useState<string>("sena-green");
-  const [customColor, setCustomColor] = useState<string>("#2F4D2A");
+  const [customColor, setCustomColor] = useState<string>("#1D5DBF");
   const [isSavingTheme, setIsSavingTheme] = useState(false);
   
   // Estados para imágenes
@@ -174,7 +174,7 @@ export function AdminDashboard() {
     { id: "shop", label: "Tienda", icon: Store },
     { id: "images", label: "Imágenes", icon: ImageIcon },
     { id: "video", label: "Video", icon: Video },
-    { id: "entrepreneur", label: "Emprendedor", icon: User },
+    { id: "entrepreneur", label: "Especialista", icon: User },
     { id: "hours", label: "Horarios", icon: Clock },
     { id: "blogs", label: "Blogs", icon: FileText },
     { id: "reviews", label: "Opiniones", icon: MessageSquare, badge: pendingReviewsCount > 0 ? String(pendingReviewsCount) : undefined },
@@ -187,9 +187,9 @@ export function AdminDashboard() {
 
   useEffect(() => {
     if (companyData?.id) {
-      loadReviews();
+      // loadReviews(); // Tabla opcional - comentada temporalmente
       loadBusinessHours();
-      loadBlogs();
+      // loadBlogs(); // Tabla opcional - comentada temporalmente
     }
   }, [companyData?.id]);
 
@@ -225,9 +225,9 @@ export function AdminDashboard() {
         
         // Cargar tema personalizado
         setSelectedTheme(company.selected_theme || 'sena-green');
-        setCustomColor(company.custom_color || '#2F4D2A');
+        setCustomColor(company.custom_color || '#1D5DBF');
         
-        // Cargar datos del emprendedor
+        // Cargar datos del especialista
         setEntrepreneurName(company.entrepreneur_name || '');
         setEntrepreneurImageUrl(company.entrepreneur_image_url || '');
         
@@ -303,8 +303,8 @@ export function AdminDashboard() {
 
         setLinks(socialLinks);
 
-        // Cargar productos de la empresa
-        const { data: productsData, error: productsError } = await supabase
+        // Cargar productos de la empresa (comentado - tabla opcional)
+        /* const { data: productsData, error: productsError } = await supabase
           .from('products')
           .select('*')
           .eq('company_id', company.id)
@@ -312,7 +312,7 @@ export function AdminDashboard() {
 
         if (!productsError && productsData) {
           setProducts(productsData);
-        }
+        } */
         
         // Cargar imágenes de la empresa
         const { data: imagesData, error: imagesError } = await supabase
@@ -1036,7 +1036,7 @@ export function AdminDashboard() {
   // ====== FUNCIONES PARA DISEÑO/TEMAS ======
   
   const predefinedThemes = [
-    { id: 'sena-green', name: 'SENA Verde', color: '#2F4D2A', description: 'Color institucional del SENA' },
+    { id: 'sena-green', name: 'SENA Verde', color: '#1D5DBF', description: 'Color institucional del SENA' },
     { id: 'ocean-blue', name: 'Azul Océano', color: '#0EA5E9', description: 'Profesional y confiable' },
     { id: 'forest-green', name: 'Verde Bosque', color: '#10B981', description: 'Natural y fresco' },
     { id: 'sunset-orange', name: 'Naranja Atardecer', color: '#F97316', description: 'Energético y vibrante' },
@@ -1293,7 +1293,7 @@ export function AdminDashboard() {
     }
   };
 
-  // ====== FUNCIONES PARA EMPRENDEDOR ======
+  // ====== FUNCIONES PARA ESPECIALISTA ======
   
   const uploadEntrepreneurImage = async (file: File) => {
     if (!companyData) return;
@@ -1341,9 +1341,9 @@ export function AdminDashboard() {
       if (updateError) throw updateError;
       
       setEntrepreneurImageUrl(publicUrl);
-      alert('Imagen del emprendedor subida con éxito');
+      alert('Imagen del especialista subida con éxito');
     } catch (error) {
-      console.error('Error al subir imagen del emprendedor:', error);
+      console.error('Error al subir imagen del especialista:', error);
       alert('Error al subir la imagen');
     } finally {
       setUploadingEntrepreneurImage(false);
@@ -1364,9 +1364,9 @@ export function AdminDashboard() {
       
       if (error) throw error;
       
-      alert('Datos del emprendedor guardados con éxito');
+      alert('Datos del especialista guardados con éxito');
     } catch (error) {
-      console.error('Error al guardar datos del emprendedor:', error);
+      console.error('Error al guardar datos del especialista:', error);
       alert('Error al guardar los datos');
     }
   };
@@ -1436,7 +1436,7 @@ export function AdminDashboard() {
         </div>
         <button 
           onClick={addNewLink}
-          className="flex items-center justify-center gap-2 bg-[hsl(111,29%,23%)] hover:bg-[hsl(111,29%,18%)] text-white px-4 md:px-6 py-3 rounded-lg shadow-md hover:shadow-lg transition-all font-medium text-sm md:text-base w-full sm:w-auto"
+          className="flex items-center justify-center gap-2 bg-[hsl(211,75%,44%)] hover:bg-[hsl(211,75%,34%)] text-white px-4 md:px-6 py-3 rounded-lg shadow-md hover:shadow-lg transition-all font-medium text-sm md:text-base w-full sm:w-auto"
         >
           <Plus className="w-5 h-5" />
           Agregar
@@ -1444,8 +1444,8 @@ export function AdminDashboard() {
       </div>
 
       {/* Add Collection */}
-      <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-[hsl(111,29%,23%)]/5 to-transparent rounded-lg border border-[hsl(111,29%,23%)]/20 hover:border-[hsl(111,29%,23%)]/40 transition-colors cursor-pointer group">
-        <input type="checkbox" className="rounded border-[hsl(111,29%,23%)] text-[hsl(111,29%,23%)] focus:ring-[hsl(111,29%,23%)] focus:ring-offset-0 w-5 h-5 flex-shrink-0" />
+      <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-[hsl(211,75%,44%)]/5 to-transparent rounded-lg border border-[hsl(211,75%,44%)]/20 hover:border-[hsl(211,75%,44%)]/40 transition-colors cursor-pointer group">
+        <input type="checkbox" className="rounded border-[hsl(211,75%,44%)] text-[hsl(211,75%,44%)] focus:ring-[hsl(211,75%,44%)] focus:ring-offset-0 w-5 h-5 flex-shrink-0" />
         <span className="text-sm md:text-base font-medium text-gray-700 group-hover:text-gray-900">Agregar colección</span>
       </div>
 
@@ -1460,8 +1460,8 @@ export function AdminDashboard() {
             onDragEnd={handleDragEnd}
             className={`bg-white border-2 rounded-xl p-4 md:p-5 transition-all ${
               draggedIndex === index 
-                ? 'opacity-50 border-[hsl(111,29%,23%)]' 
-                : 'border-gray-200 hover:shadow-lg hover:border-[hsl(111,29%,23%)]/30'
+                ? 'opacity-50 border-[hsl(211,75%,44%)]' 
+                : 'border-gray-200 hover:shadow-lg hover:border-[hsl(211,75%,44%)]/30'
             }`}
           >
             {editingLinkId === link.id ? (
@@ -1473,7 +1473,7 @@ export function AdminDashboard() {
                     type="text"
                     value={editForm.title}
                     onChange={(e) => setEditForm(prev => ({ ...prev, title: e.target.value }))}
-                    className="w-full px-3 md:px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-[hsl(111,29%,23%)] focus:outline-none text-gray-900 text-sm md:text-base"
+                    className="w-full px-3 md:px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-[hsl(211,75%,44%)] focus:outline-none text-gray-900 text-sm md:text-base"
                     placeholder="Título del enlace"
                   />
                 </div>
@@ -1483,7 +1483,7 @@ export function AdminDashboard() {
                     type="text"
                     value={editForm.url}
                     onChange={(e) => setEditForm(prev => ({ ...prev, url: e.target.value }))}
-                    className="w-full px-3 md:px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-[hsl(111,29%,23%)] focus:outline-none text-gray-900 text-sm md:text-base"
+                    className="w-full px-3 md:px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-[hsl(211,75%,44%)] focus:outline-none text-gray-900 text-sm md:text-base"
                     placeholder="https://..."
                   />
                 </div>
@@ -1497,7 +1497,7 @@ export function AdminDashboard() {
                   </button>
                   <button
                     onClick={() => saveEdit(link.id)}
-                    className="flex items-center justify-center gap-2 px-4 py-2 bg-[hsl(111,29%,23%)] hover:bg-[hsl(111,29%,18%)] text-white rounded-lg transition-colors text-sm md:text-base"
+                    className="flex items-center justify-center gap-2 px-4 py-2 bg-[hsl(211,75%,44%)] hover:bg-[hsl(211,75%,34%)] text-white rounded-lg transition-colors text-sm md:text-base"
                   >
                     <Save className="w-4 h-4" />
                     Guardar
@@ -1509,7 +1509,7 @@ export function AdminDashboard() {
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 {/* Drag Handle & Link Info */}
                 <div className="flex items-start gap-3 md:gap-4 flex-1 min-w-0">
-                  <div className="cursor-move text-gray-400 hover:text-[hsl(111,29%,23%)] transition-colors flex-shrink-0 mt-1">
+                  <div className="cursor-move text-gray-400 hover:text-[hsl(211,75%,44%)] transition-colors flex-shrink-0 mt-1">
                     <GripVertical className="w-5 h-5" />
                   </div>
 
@@ -1521,17 +1521,17 @@ export function AdminDashboard() {
                         href={link.url.startsWith('http') ? link.url : `https://${link.url}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="hover:text-[hsl(111,29%,23%)] transition-colors flex-shrink-0"
+                        className="hover:text-[hsl(211,75%,44%)] transition-colors flex-shrink-0"
                         onClick={(e) => e.stopPropagation()}
                       >
-                        <ExternalLink className="w-4 h-4 text-[hsl(111,29%,23%)]" />
+                        <ExternalLink className="w-4 h-4 text-[hsl(211,75%,44%)]" />
                       </a>
                     </div>
                     <a 
                       href={link.url.startsWith('http') ? link.url : `https://${link.url}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-xs md:text-sm text-gray-600 hover:text-[hsl(111,29%,23%)] truncate block transition-colors"
+                      className="text-xs md:text-sm text-gray-600 hover:text-[hsl(211,75%,44%)] truncate block transition-colors"
                       onClick={(e) => e.stopPropagation()}
                     >
                       {link.url}
@@ -1549,21 +1549,21 @@ export function AdminDashboard() {
                       onChange={() => toggleLinkStatus(link.id)}
                       className="sr-only peer"
                     />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[hsl(111,29%,23%)]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[hsl(111,29%,23%)]"></div>
+                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[hsl(211,75%,44%)]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[hsl(211,75%,44%)]"></div>
                   </label>
 
                   {/* Menu */}
                   <div className="flex items-center gap-1">
                     <button 
                       onClick={() => startEditing(link)}
-                      className="p-2 hover:bg-[hsl(111,29%,23%)]/10 rounded-lg transition-colors touch-manipulation"
+                      className="p-2 hover:bg-[hsl(211,75%,44%)]/10 rounded-lg transition-colors touch-manipulation"
                       title="Editar"
                     >
                       <Edit3 className="w-4 h-4 text-gray-600" />
                     </button>
                     <button 
                       onClick={() => copyLink(link)}
-                      className="p-2 hover:bg-[hsl(111,29%,23%)]/10 rounded-lg transition-colors touch-manipulation"
+                      className="p-2 hover:bg-[hsl(211,75%,44%)]/10 rounded-lg transition-colors touch-manipulation"
                       title="Copiar"
                     >
                       <Copy className="w-4 h-4 text-gray-600" />
@@ -1583,13 +1583,13 @@ export function AdminDashboard() {
         ))}
 
         {links.length === 0 && (
-          <div className="text-center py-16 bg-gradient-to-br from-gray-50 to-[hsl(111,29%,23%)]/5 rounded-2xl border-2 border-dashed border-gray-300">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-[hsl(111,29%,23%)]/10 rounded-full mb-6">
-              <Link className="w-10 h-10 text-[hsl(111,29%,23%)]" />
+          <div className="text-center py-16 bg-gradient-to-br from-gray-50 to-[hsl(211,75%,44%)]/5 rounded-2xl border-2 border-dashed border-gray-300">
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-[hsl(211,75%,44%)]/10 rounded-full mb-6">
+              <Link className="w-10 h-10 text-[hsl(211,75%,44%)]" />
             </div>
             <h3 className="text-xl font-bold text-gray-900 mb-3">No hay enlaces todavía</h3>
             <p className="text-gray-600 mb-6 max-w-md mx-auto">Agrega tu primer enlace para comenzar a compartir tu contenido</p>
-            <button className="bg-[hsl(111,29%,23%)] hover:bg-[hsl(111,29%,18%)] text-white px-8 py-3 rounded-lg shadow-md hover:shadow-lg transition-all font-medium inline-flex items-center gap-2">
+            <button className="bg-[hsl(211,75%,44%)] hover:bg-[hsl(211,75%,34%)] text-white px-8 py-3 rounded-lg shadow-md hover:shadow-lg transition-all font-medium inline-flex items-center gap-2">
               <Plus className="w-5 h-5" />
               Agregar Enlace
             </button>
@@ -1608,7 +1608,7 @@ export function AdminDashboard() {
         </div>
         <button 
           onClick={() => openProductModal()}
-          className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[hsl(111,29%,23%)] hover:bg-[hsl(111,29%,18%)] text-white px-4 md:px-6 py-3 rounded-lg shadow-md hover:shadow-lg transition-all font-medium touch-manipulation"
+          className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[hsl(211,75%,44%)] hover:bg-[hsl(211,75%,34%)] text-white px-4 md:px-6 py-3 rounded-lg shadow-md hover:shadow-lg transition-all font-medium touch-manipulation"
         >
           <Plus className="w-5 h-5" />
           Agregar Producto
@@ -1671,7 +1671,7 @@ export function AdminDashboard() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">{products.map((product) => (
           <div 
             key={product.id}
-            className="bg-white border-2 border-gray-200 rounded-xl overflow-hidden hover:shadow-lg hover:border-[hsl(111,29%,23%)]/30 transition-all"
+            className="bg-white border-2 border-gray-200 rounded-xl overflow-hidden hover:shadow-lg hover:border-[hsl(211,75%,44%)]/30 transition-all"
           >
             {/* Imagen del producto */}
             <div className="relative h-48 bg-gray-100">
@@ -1696,7 +1696,7 @@ export function AdminDashboard() {
                     onChange={() => toggleProductStatus(product.id)}
                     className="sr-only peer"
                   />
-                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[hsl(111,29%,23%)]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[hsl(111,29%,23%)]"></div>
+                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[hsl(211,75%,44%)]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[hsl(211,75%,44%)]"></div>
                 </label>
               </div>
             </div>
@@ -1712,13 +1712,13 @@ export function AdminDashboard() {
 
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <p className="text-xl md:text-2xl font-bold text-[hsl(111,29%,23%)]">
+                  <p className="text-xl md:text-2xl font-bold text-[hsl(211,75%,44%)]">
                     ${product.price.toLocaleString()}
                   </p>
                   <p className="text-xs text-gray-500">Stock: {product.stock_quantity}</p>
                 </div>
                 {product.category && (
-                  <span className="px-2 md:px-3 py-1 bg-[hsl(111,29%,23%)]/10 text-[hsl(111,29%,23%)] rounded-full text-xs font-medium">
+                  <span className="px-2 md:px-3 py-1 bg-[hsl(211,75%,44%)]/10 text-[hsl(211,75%,44%)] rounded-full text-xs font-medium">
                     {product.category}
                   </span>
                 )}
@@ -1745,7 +1745,7 @@ export function AdminDashboard() {
               <div className="flex gap-2">
                 <button
                   onClick={() => openProductModal(product)}
-                  className="flex-1 flex items-center justify-center gap-2 px-3 md:px-4 py-2 bg-[hsl(111,29%,23%)]/10 hover:bg-[hsl(111,29%,23%)]/20 text-[hsl(111,29%,23%)] rounded-lg transition-colors touch-manipulation text-sm md:text-base"
+                  className="flex-1 flex items-center justify-center gap-2 px-3 md:px-4 py-2 bg-[hsl(211,75%,44%)]/10 hover:bg-[hsl(211,75%,44%)]/20 text-[hsl(211,75%,44%)] rounded-lg transition-colors touch-manipulation text-sm md:text-base"
                 >
                   <Edit3 className="w-4 h-4" />
                   <span className="hidden sm:inline">Editar</span>
@@ -1765,15 +1765,15 @@ export function AdminDashboard() {
 
       {/* Estado vacío */}
       {products.length === 0 && (
-        <div className="text-center py-16 bg-gradient-to-br from-gray-50 to-[hsl(111,29%,23%)]/5 rounded-2xl border-2 border-dashed border-gray-300">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-[hsl(111,29%,23%)]/10 rounded-full mb-6">
-            <Store className="w-10 h-10 text-[hsl(111,29%,23%)]" />
+        <div className="text-center py-16 bg-gradient-to-br from-gray-50 to-[hsl(211,75%,44%)]/5 rounded-2xl border-2 border-dashed border-gray-300">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-[hsl(211,75%,44%)]/10 rounded-full mb-6">
+            <Store className="w-10 h-10 text-[hsl(211,75%,44%)]" />
           </div>
           <h3 className="text-xl font-bold text-gray-900 mb-3">No hay productos todavía</h3>
           <p className="text-gray-600 mb-6 max-w-md mx-auto">Comienza a vender agregando tu primer producto</p>
           <button 
             onClick={() => openProductModal()}
-            className="bg-[hsl(111,29%,23%)] hover:bg-[hsl(111,29%,18%)] text-white px-8 py-3 rounded-lg shadow-md hover:shadow-lg transition-all font-medium inline-flex items-center gap-2"
+            className="bg-[hsl(211,75%,44%)] hover:bg-[hsl(211,75%,34%)] text-white px-8 py-3 rounded-lg shadow-md hover:shadow-lg transition-all font-medium inline-flex items-center gap-2"
           >
             <Plus className="w-5 h-5" />
             Agregar Producto
@@ -1809,7 +1809,7 @@ export function AdminDashboard() {
                   type="text"
                   value={productForm.name}
                   onChange={(e) => setProductForm(prev => ({ ...prev, name: e.target.value }))}
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-[hsl(111,29%,23%)] focus:outline-none text-gray-900"
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-[hsl(211,75%,44%)] focus:outline-none text-gray-900"
                   placeholder="Ej: Café Premium"
                 />
               </div>
@@ -1823,7 +1823,7 @@ export function AdminDashboard() {
                   value={productForm.description}
                   onChange={(e) => setProductForm(prev => ({ ...prev, description: e.target.value }))}
                   rows={3}
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-[hsl(111,29%,23%)] focus:outline-none text-gray-900"
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-[hsl(211,75%,44%)] focus:outline-none text-gray-900"
                   placeholder="Describe tu producto..."
                 />
               </div>
@@ -1838,7 +1838,7 @@ export function AdminDashboard() {
                     type="number"
                     value={productForm.price}
                     onChange={(e) => setProductForm(prev => ({ ...prev, price: e.target.value }))}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-[hsl(111,29%,23%)] focus:outline-none text-gray-900"
+                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-[hsl(211,75%,44%)] focus:outline-none text-gray-900"
                     placeholder="0"
                   />
                 </div>
@@ -1850,7 +1850,7 @@ export function AdminDashboard() {
                     type="number"
                     value={productForm.stock_quantity}
                     onChange={(e) => setProductForm(prev => ({ ...prev, stock_quantity: e.target.value }))}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-[hsl(111,29%,23%)] focus:outline-none text-gray-900"
+                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-[hsl(211,75%,44%)] focus:outline-none text-gray-900"
                     placeholder="0"
                   />
                 </div>
@@ -1865,7 +1865,7 @@ export function AdminDashboard() {
                   type="text"
                   value={productForm.category}
                   onChange={(e) => setProductForm(prev => ({ ...prev, category: e.target.value }))}
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-[hsl(111,29%,23%)] focus:outline-none text-gray-900"
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-[hsl(211,75%,44%)] focus:outline-none text-gray-900"
                   placeholder="Ej: Alimentos, Ropa, Electrónica"
                 />
               </div>
@@ -1898,7 +1898,7 @@ export function AdminDashboard() {
                 <label className={`flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer transition-all ${
                   uploadingProductImage 
                     ? 'border-gray-300 bg-gray-50 cursor-not-allowed' 
-                    : 'border-[hsl(111,29%,23%)] bg-[hsl(111,29%,23%)]/5 hover:bg-[hsl(111,29%,23%)]/10'
+                    : 'border-[hsl(211,75%,44%)] bg-[hsl(211,75%,44%)]/5 hover:bg-[hsl(211,75%,44%)]/10'
                 }`}>
                   <input
                     type="file"
@@ -1910,12 +1910,12 @@ export function AdminDashboard() {
                   <div className="flex flex-col items-center justify-center pt-5 pb-6">
                     {uploadingProductImage ? (
                       <>
-                        <div className="w-8 h-8 border-4 border-gray-300 border-t-[hsl(111,29%,23%)] rounded-full animate-spin mb-2"></div>
+                        <div className="w-8 h-8 border-4 border-gray-300 border-t-[hsl(211,75%,44%)] rounded-full animate-spin mb-2"></div>
                         <p className="text-sm text-gray-600">Subiendo imagen...</p>
                       </>
                     ) : (
                       <>
-                        <ImageIcon className="w-10 h-10 text-[hsl(111,29%,23%)] mb-2" />
+                        <ImageIcon className="w-10 h-10 text-[hsl(211,75%,44%)] mb-2" />
                         <p className="text-sm text-gray-700 font-medium">Haz clic para subir una imagen</p>
                         <p className="text-xs text-gray-500 mt-1">PNG, JPG o WebP (máx. 5MB)</p>
                       </>
@@ -1936,7 +1936,7 @@ export function AdminDashboard() {
               <button
                 onClick={saveProduct}
                 disabled={!productForm.name || !productForm.price}
-                className="px-6 py-3 bg-[hsl(111,29%,23%)] hover:bg-[hsl(111,29%,18%)] text-white rounded-lg transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-6 py-3 bg-[hsl(211,75%,44%)] hover:bg-[hsl(211,75%,34%)] text-white rounded-lg transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {editingProduct ? 'Actualizar' : 'Crear'} Producto
               </button>
@@ -1977,8 +1977,8 @@ export function AdminDashboard() {
       {/* Logo Section */}
       <div className="bg-white border-2 border-gray-200 rounded-xl p-4 md:p-6 shadow-sm">
         <div className="flex items-center gap-2 md:gap-3 mb-4">
-          <div className="p-2 bg-[hsl(111,29%,23%)]/10 rounded-lg flex-shrink-0">
-            <ImageIcon className="w-5 h-5 md:w-6 md:h-6 text-[hsl(111,29%,23%)]" />
+          <div className="p-2 bg-[hsl(211,75%,44%)]/10 rounded-lg flex-shrink-0">
+            <ImageIcon className="w-5 h-5 md:w-6 md:h-6 text-[hsl(211,75%,44%)]" />
           </div>
           <div className="min-w-0">
             <h3 className="text-lg md:text-xl font-bold text-gray-900">Logo</h3>
@@ -2013,7 +2013,7 @@ export function AdminDashboard() {
             />
             <label
               htmlFor="logo-upload"
-              className={`flex items-center justify-center gap-2 px-4 md:px-6 py-3 bg-[hsl(111,29%,23%)] hover:bg-[hsl(111,29%,18%)] text-white rounded-lg cursor-pointer transition-all font-medium touch-manipulation text-sm md:text-base ${
+              className={`flex items-center justify-center gap-2 px-4 md:px-6 py-3 bg-[hsl(211,75%,44%)] hover:bg-[hsl(211,75%,34%)] text-white rounded-lg cursor-pointer transition-all font-medium touch-manipulation text-sm md:text-base ${
                 uploadingImage === 'logo' ? 'opacity-50 cursor-not-allowed' : ''
               }`}
             >
@@ -2048,8 +2048,8 @@ export function AdminDashboard() {
       {/* Cover Section */}
       <div className="bg-white border-2 border-gray-200 rounded-xl p-4 md:p-6 shadow-sm">
         <div className="flex items-center gap-2 md:gap-3 mb-4">
-          <div className="p-2 bg-[hsl(111,29%,23%)]/10 rounded-lg flex-shrink-0">
-            <ImageIcon className="w-5 h-5 md:w-6 md:h-6 text-[hsl(111,29%,23%)]" />
+          <div className="p-2 bg-[hsl(211,75%,44%)]/10 rounded-lg flex-shrink-0">
+            <ImageIcon className="w-5 h-5 md:w-6 md:h-6 text-[hsl(211,75%,44%)]" />
           </div>
           <div className="min-w-0">
             <h3 className="text-lg md:text-xl font-bold text-gray-900">Imagen de Portada</h3>
@@ -2082,7 +2082,7 @@ export function AdminDashboard() {
             />
             <label
               htmlFor="cover-upload"
-              className={`flex items-center justify-center gap-2 px-4 md:px-6 py-3 bg-[hsl(111,29%,23%)] hover:bg-[hsl(111,29%,18%)] text-white rounded-lg cursor-pointer transition-all font-medium touch-manipulation text-sm md:text-base ${
+              className={`flex items-center justify-center gap-2 px-4 md:px-6 py-3 bg-[hsl(211,75%,44%)] hover:bg-[hsl(211,75%,34%)] text-white rounded-lg cursor-pointer transition-all font-medium touch-manipulation text-sm md:text-base ${
                 uploadingImage === 'cover' ? 'opacity-50 cursor-not-allowed' : ''
               }`}
             >
@@ -2119,8 +2119,8 @@ export function AdminDashboard() {
       <div className="bg-white border-2 border-gray-200 rounded-xl p-6 shadow-sm">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-[hsl(111,29%,23%)]/10 rounded-lg">
-              <ImageIcon className="w-6 h-6 text-[hsl(111,29%,23%)]" />
+            <div className="p-2 bg-[hsl(211,75%,44%)]/10 rounded-lg">
+              <ImageIcon className="w-6 h-6 text-[hsl(211,75%,44%)]" />
             </div>
             <div>
               <h3 className="text-xl font-bold text-gray-900">Galería de Imágenes</h3>
@@ -2141,7 +2141,7 @@ export function AdminDashboard() {
           />
           <label
             htmlFor="gallery-upload"
-            className={`flex items-center gap-2 px-6 py-3 bg-[hsl(111,29%,23%)] hover:bg-[hsl(111,29%,18%)] text-white rounded-lg cursor-pointer transition-all font-medium ${
+            className={`flex items-center gap-2 px-6 py-3 bg-[hsl(211,75%,44%)] hover:bg-[hsl(211,75%,34%)] text-white rounded-lg cursor-pointer transition-all font-medium ${
               uploadingImage === 'gallery' || imageUrls.gallery.length >= 3 ? 'opacity-50 cursor-not-allowed' : ''
             }`}
           >
@@ -2228,8 +2228,8 @@ export function AdminDashboard() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Emprendedor</h1>
-          <p className="text-gray-600 mt-2 text-sm md:text-base">Información del fundador o emprendedor</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Especialista</h1>
+          <p className="text-gray-600 mt-2 text-sm md:text-base">Información del profesional especialista</p>
         </div>
       </div>
 
@@ -2242,12 +2242,12 @@ export function AdminDashboard() {
             </div>
           </div>
           <div>
-            <h4 className="font-bold text-blue-900 mb-1 text-sm md:text-base">Información del emprendedor</h4>
+            <h4 className="font-bold text-blue-900 mb-1 text-sm md:text-base">Información del especialista</h4>
             <ul className="space-y-1 text-xs md:text-sm text-blue-800">
-              <li>• Agrega una foto del fundador o emprendedor</li>
+              <li>• Agrega una foto del profesional especialista</li>
               <li>• La imagen debe ser cuadrada (recomendado 400x400px)</li>
               <li>• Tamaño máximo: 800KB</li>
-              <li>• Se mostrará en la ficha pública con el nombre y el rol "Empresario"</li>
+              <li>• Se mostrará en la ficha pública con el nombre y el rol "Especialista"</li>
             </ul>
           </div>
         </div>
@@ -2256,22 +2256,22 @@ export function AdminDashboard() {
       {/* Formulario */}
       <div className="bg-white border-2 border-gray-200 rounded-xl p-4 md:p-6">
         <div className="space-y-6">
-          {/* Imagen del emprendedor */}
+          {/* Imagen del especialista */}
           <div>
             <label className="block text-sm md:text-base font-medium text-gray-700 mb-2">
-              Foto del Emprendedor
+              Foto del Especialista
             </label>
             
             {entrepreneurImageUrl ? (
               <div className="relative inline-block">
                 <img 
                   src={entrepreneurImageUrl} 
-                  alt="Emprendedor"
+                  alt="Especialista"
                   className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-4 border-gray-200"
                 />
                 <button
                   onClick={() => {
-                    if (confirm('¿Eliminar la foto del emprendedor?')) {
+                    if (confirm('¿Eliminar la foto del especialista?')) {
                       setEntrepreneurImageUrl('');
                       saveEntrepreneurData();
                     }
@@ -2293,7 +2293,7 @@ export function AdminDashboard() {
                 />
                 <label
                   htmlFor="entrepreneur-image"
-                  className={`flex items-center justify-center gap-2 px-4 md:px-6 py-3 bg-[hsl(111,29%,23%)] hover:bg-[hsl(111,29%,18%)] text-white rounded-lg cursor-pointer transition-all font-medium touch-manipulation text-sm md:text-base ${
+                  className={`flex items-center justify-center gap-2 px-4 md:px-6 py-3 bg-[hsl(211,75%,44%)] hover:bg-[hsl(211,75%,34%)] text-white rounded-lg cursor-pointer transition-all font-medium touch-manipulation text-sm md:text-base ${
                     uploadingEntrepreneurImage ? 'opacity-50 cursor-not-allowed' : ''
                   }`}
                 >
@@ -2314,17 +2314,17 @@ export function AdminDashboard() {
             )}
           </div>
 
-          {/* Nombre del emprendedor */}
+          {/* Nombre del especialista */}
           <div>
             <label className="block text-sm md:text-base font-medium text-gray-700 mb-2">
-              Nombre del Emprendedor
+              Nombre del Especialista
             </label>
             <input
               type="text"
               value={entrepreneurName}
               onChange={(e) => setEntrepreneurName(e.target.value)}
               placeholder="Ej: Juan Pérez González"
-              className="w-full px-3 md:px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-[hsl(111,29%,23%)] focus:ring-2 focus:ring-[hsl(111,29%,23%)]/20 transition-all text-gray-900 text-sm md:text-base"
+              className="w-full px-3 md:px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-[hsl(211,75%,44%)] focus:ring-2 focus:ring-[hsl(211,75%,44%)]/20 transition-all text-gray-900 text-sm md:text-base"
             />
             <p className="text-xs md:text-sm text-gray-500 mt-2">Este nombre se mostrará junto a la foto en la ficha pública</p>
           </div>
@@ -2333,7 +2333,7 @@ export function AdminDashboard() {
           <div className="flex justify-end pt-4 border-t border-gray-200">
             <button
               onClick={saveEntrepreneurData}
-              className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 md:px-8 py-3 bg-[hsl(111,29%,23%)] hover:bg-[hsl(111,29%,18%)] text-white rounded-lg transition-all font-medium shadow-md hover:shadow-lg touch-manipulation text-sm md:text-base"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 md:px-8 py-3 bg-[hsl(211,75%,44%)] hover:bg-[hsl(211,75%,34%)] text-white rounded-lg transition-all font-medium shadow-md hover:shadow-lg touch-manipulation text-sm md:text-base"
             >
               <Check className="w-5 h-5" />
               Guardar Cambios
@@ -2351,7 +2351,7 @@ export function AdminDashboard() {
               {entrepreneurImageUrl ? (
                 <img 
                   src={entrepreneurImageUrl} 
-                  alt={entrepreneurName || 'Emprendedor'}
+                  alt={entrepreneurName || 'Especialista'}
                   className="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover border-2 border-gray-200"
                 />
               ) : (
@@ -2361,7 +2361,7 @@ export function AdminDashboard() {
               )}
               <div>
                 <h4 className="text-xl font-bold text-gray-900">
-                  {entrepreneurName || 'Nombre del Emprendedor'}
+                  {entrepreneurName || 'Nombre del Especialista'}
                 </h4>
                 <p className="text-gray-600">Empresario</p>
               </div>
@@ -2421,7 +2421,7 @@ export function AdminDashboard() {
                   setYoutubeError(null);
                 }}
                 placeholder="https://www.youtube.com/watch?v=..."
-                className="w-full px-3 md:px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-[hsl(111,29%,23%)] focus:ring-2 focus:ring-[hsl(111,29%,23%)]/20 transition-all text-gray-900 text-sm md:text-base"
+                className="w-full px-3 md:px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-[hsl(211,75%,44%)] focus:ring-2 focus:ring-[hsl(211,75%,44%)]/20 transition-all text-gray-900 text-sm md:text-base"
               />
               <p className="text-xs md:text-sm text-gray-500 mt-2">
                 Ejemplo: https://www.youtube.com/watch?v=dQw4w9WgXcQ
@@ -2450,7 +2450,7 @@ export function AdminDashboard() {
               )}
               <button
                 onClick={saveYouTubeVideo}
-                className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 md:px-8 py-3 bg-[hsl(111,29%,23%)] hover:bg-[hsl(111,29%,18%)] text-white rounded-lg transition-all font-medium shadow-md hover:shadow-lg touch-manipulation text-sm md:text-base"
+                className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 md:px-8 py-3 bg-[hsl(211,75%,44%)] hover:bg-[hsl(211,75%,34%)] text-white rounded-lg transition-all font-medium shadow-md hover:shadow-lg touch-manipulation text-sm md:text-base"
               >
                 <Save className="w-5 h-5" />
                 Guardar Video
@@ -2587,7 +2587,7 @@ export function AdminDashboard() {
       {/* Reviews List */}
       {isLoadingReviews ? (
         <div className="text-center py-12">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-[hsl(111,29%,23%)]"></div>
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-[hsl(211,75%,44%)]"></div>
           <p className="mt-4 text-gray-600">Cargando opiniones...</p>
         </div>
       ) : reviews.length === 0 ? (
@@ -2728,7 +2728,7 @@ export function AdminDashboard() {
           </div>
           <button
             onClick={saveBusinessHours}
-            className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[hsl(111,29%,23%)] hover:bg-[hsl(111,29%,18%)] text-white px-4 md:px-6 py-3 rounded-lg shadow-md hover:shadow-lg transition-all font-medium touch-manipulation text-sm md:text-base"
+            className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[hsl(211,75%,44%)] hover:bg-[hsl(211,75%,34%)] text-white px-4 md:px-6 py-3 rounded-lg shadow-md hover:shadow-lg transition-all font-medium touch-manipulation text-sm md:text-base"
           >
             <Save className="w-5 h-5" />
             Guardar Horarios
@@ -2738,7 +2738,7 @@ export function AdminDashboard() {
         {/* Horarios List */}
         {isLoadingHours ? (
           <div className="text-center py-12">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-[hsl(111,29%,23%)]"></div>
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-[hsl(211,75%,44%)]"></div>
             <p className="mt-4 text-gray-600">Cargando horarios...</p>
           </div>
         ) : (
@@ -2845,7 +2845,7 @@ export function AdminDashboard() {
                             type="time"
                             value={hourData.opens_at || '07:00'}
                             onChange={(e) => updateHour(day.id, 'opens_at', e.target.value)}
-                            className="px-2 md:px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-[hsl(111,29%,23%)] focus:outline-none text-gray-900 text-sm md:text-base flex-1 sm:flex-none"
+                            className="px-2 md:px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-[hsl(211,75%,44%)] focus:outline-none text-gray-900 text-sm md:text-base flex-1 sm:flex-none"
                           />
                         </div>
                         <span className="text-gray-400 hidden sm:inline">—</span>
@@ -2855,7 +2855,7 @@ export function AdminDashboard() {
                             type="time"
                             value={hourData.closes_at || '18:00'}
                             onChange={(e) => updateHour(day.id, 'closes_at', e.target.value)}
-                            className="px-2 md:px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-[hsl(111,29%,23%)] focus:outline-none text-gray-900 text-sm md:text-base flex-1 sm:flex-none"
+                            className="px-2 md:px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-[hsl(211,75%,44%)] focus:outline-none text-gray-900 text-sm md:text-base flex-1 sm:flex-none"
                           />
                         </div>
                       </div>
@@ -3203,7 +3203,7 @@ export function AdminDashboard() {
         <button 
           onClick={saveThemeSettings}
           disabled={isSavingTheme}
-          className="flex items-center gap-2 bg-[hsl(111,29%,23%)] hover:bg-[hsl(111,29%,18%)] text-white px-6 py-3 rounded-lg shadow-md hover:shadow-lg transition-all font-medium disabled:opacity-50"
+          className="flex items-center gap-2 bg-[hsl(211,75%,44%)] hover:bg-[hsl(211,75%,34%)] text-white px-6 py-3 rounded-lg shadow-md hover:shadow-lg transition-all font-medium disabled:opacity-50"
         >
           {isSavingTheme ? (
             <>
@@ -3237,8 +3237,8 @@ export function AdminDashboard() {
       {/* Temas Predefinidos */}
       <div className="bg-white border-2 border-gray-200 rounded-xl p-6">
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-12 h-12 bg-[hsl(111,29%,23%)]/10 rounded-lg flex items-center justify-center">
-            <Palette className="w-6 h-6 text-[hsl(111,29%,23%)]" />
+          <div className="w-12 h-12 bg-[hsl(211,75%,44%)]/10 rounded-lg flex items-center justify-center">
+            <Palette className="w-6 h-6 text-[hsl(211,75%,44%)]" />
           </div>
           <div>
             <h3 className="text-xl font-bold text-gray-900">Temas Predefinidos</h3>
@@ -3253,7 +3253,7 @@ export function AdminDashboard() {
               onClick={() => selectTheme(theme.id)}
               className={`relative p-4 rounded-xl border-2 cursor-pointer transition-all hover:shadow-lg ${
                 selectedTheme === theme.id
-                  ? 'border-[hsl(111,29%,23%)] bg-[hsl(111,29%,23%)]/5 ring-2 ring-[hsl(111,29%,23%)]/20'
+                  ? 'border-[hsl(211,75%,44%)] bg-[hsl(211,75%,44%)]/5 ring-2 ring-[hsl(211,75%,44%)]/20'
                   : 'border-gray-200 hover:border-gray-300'
               }`}
             >
@@ -3270,7 +3270,7 @@ export function AdminDashboard() {
               
               {selectedTheme === theme.id && (
                 <div className="absolute top-2 right-2">
-                  <div className="w-6 h-6 bg-[hsl(111,29%,23%)] rounded-full flex items-center justify-center">
+                  <div className="w-6 h-6 bg-[hsl(211,75%,44%)] rounded-full flex items-center justify-center">
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
@@ -3285,8 +3285,8 @@ export function AdminDashboard() {
       {/* Color Personalizado */}
       <div className="bg-white border-2 border-gray-200 rounded-xl p-6">
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-12 h-12 bg-[hsl(111,29%,23%)]/10 rounded-lg flex items-center justify-center">
-            <Palette className="w-6 h-6 text-[hsl(111,29%,23%)]" />
+          <div className="w-12 h-12 bg-[hsl(211,75%,44%)]/10 rounded-lg flex items-center justify-center">
+            <Palette className="w-6 h-6 text-[hsl(211,75%,44%)]" />
           </div>
           <div>
             <h3 className="text-xl font-bold text-gray-900">Color Personalizado</h3>
@@ -3338,7 +3338,7 @@ export function AdminDashboard() {
                   }}
                   placeholder="2F4D2A"
                   maxLength={6}
-                  className="flex-1 px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-[hsl(111,29%,23%)] focus:outline-none text-gray-900 font-mono text-lg uppercase"
+                  className="flex-1 px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-[hsl(211,75%,44%)] focus:outline-none text-gray-900 font-mono text-lg uppercase"
                 />
               </div>
               <p className="text-xs text-gray-500 mt-2">
@@ -3352,7 +3352,7 @@ export function AdminDashboard() {
                 Colores Rápidos
               </label>
               <div className="grid grid-cols-6 gap-2">
-                {['#2F4D2A', '#EF4444', '#F97316', '#EAB308', '#10B981', '#0EA5E9', '#8B5CF6', '#EC4899', '#6B7280', '#1E3A8A', '#BE185D', '#059669'].map((color) => (
+                {['#1D5DBF', '#EF4444', '#F97316', '#EAB308', '#10B981', '#0EA5E9', '#8B5CF6', '#EC4899', '#6B7280', '#1E3A8A', '#BE185D', '#059669'].map((color) => (
                   <button
                     key={color}
                     onClick={() => {
@@ -3403,10 +3403,10 @@ export function AdminDashboard() {
         <p className="text-gray-600 mt-2 text-base">Esta sección estará disponible pronto</p>
       </div>
       
-      <div className="text-center py-16 bg-gradient-to-br from-gray-50 to-[hsl(111,29%,23%)]/5 rounded-2xl border-2 border-dashed border-gray-300">
-        <div className="inline-flex items-center justify-center w-20 h-20 bg-[hsl(111,29%,23%)]/10 rounded-full mb-6">
+      <div className="text-center py-16 bg-gradient-to-br from-gray-50 to-[hsl(211,75%,44%)]/5 rounded-2xl border-2 border-dashed border-gray-300">
+        <div className="inline-flex items-center justify-center w-20 h-20 bg-[hsl(211,75%,44%)]/10 rounded-full mb-6">
           {sidebarItems.find(item => item.id === activeSection)?.icon && 
-            React.createElement(sidebarItems.find(item => item.id === activeSection)!.icon, { className: "w-10 h-10 text-[hsl(111,29%,23%)]" })
+            React.createElement(sidebarItems.find(item => item.id === activeSection)!.icon, { className: "w-10 h-10 text-[hsl(211,75%,44%)]" })
           }
         </div>
         <h3 className="text-xl font-bold text-gray-900 mb-3">Próximamente</h3>
@@ -3445,7 +3445,7 @@ export function AdminDashboard() {
       {isLoading ? (
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
-            <div className="inline-block w-16 h-16 border-4 border-[hsl(111,29%,23%)]/20 border-t-[hsl(111,29%,23%)] rounded-full animate-spin mb-4"></div>
+            <div className="inline-block w-16 h-16 border-4 border-[hsl(211,75%,44%)]/20 border-t-[hsl(211,75%,44%)] rounded-full animate-spin mb-4"></div>
             <p className="text-gray-600 font-medium">Cargando datos de tu empresa...</p>
           </div>
         </div>
@@ -3454,10 +3454,10 @@ export function AdminDashboard() {
       {/* Sidebar */}
       <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r-2 border-gray-200 shadow-lg transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0`}>
         {/* Sidebar Header */}
-        <div className="p-5 border-b-2 border-gray-200 bg-gradient-to-r from-[hsl(111,29%,23%)]/5 to-transparent">
+        <div className="p-5 border-b-2 border-gray-200 bg-gradient-to-r from-[hsl(211,75%,44%)]/5 to-transparent">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-[hsl(111,29%,23%)] to-[hsl(111,29%,18%)] rounded-xl flex items-center justify-center shadow-md">
+              <div className="w-10 h-10 bg-gradient-to-br from-[hsl(211,75%,44%)] to-[hsl(211,75%,34%)] rounded-xl flex items-center justify-center shadow-md">
                 <span className="text-white font-bold text-lg">
                   {userProfile?.name?.charAt(0).toUpperCase() || "U"}
                 </span>
@@ -3479,14 +3479,14 @@ export function AdminDashboard() {
           <div className="flex gap-2">
             <button
               onClick={() => companyData && window.open(`/${companyData.slug}`, '_blank')}
-              className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-white border-2 border-gray-200 rounded-lg hover:bg-gray-50 hover:border-[hsl(111,29%,23%)]/30 transition-all text-sm font-medium text-gray-700"
+              className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-white border-2 border-gray-200 rounded-lg hover:bg-gray-50 hover:border-[hsl(211,75%,44%)]/30 transition-all text-sm font-medium text-gray-700"
             >
               <Eye className="w-4 h-4" />
               Ver Ficha
             </button>
             <button
               onClick={() => companyData && router.push(`/company/create?edit=${companyData.id}`)}
-              className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-[hsl(111,29%,23%)] hover:bg-[hsl(111,29%,18%)] text-white rounded-lg transition-all text-sm font-medium"
+              className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-[hsl(211,75%,44%)] hover:bg-[hsl(211,75%,34%)] text-white rounded-lg transition-all text-sm font-medium"
             >
               <Edit3 className="w-4 h-4" />
               Editar
@@ -3502,8 +3502,8 @@ export function AdminDashboard() {
               onClick={() => setActiveSection(item.id)}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all font-medium ${
                 activeSection === item.id
-                  ? "bg-[hsl(111,29%,23%)] text-white shadow-md"
-                  : "text-gray-700 hover:bg-[hsl(111,29%,23%)]/10"
+                  ? "bg-[hsl(211,75%,44%)] text-white shadow-md"
+                  : "text-gray-700 hover:bg-[hsl(211,75%,44%)]/10"
               }`}
             >
               <item.icon className="w-5 h-5" />
@@ -3512,7 +3512,7 @@ export function AdminDashboard() {
                 <span className={`ml-auto text-xs px-2.5 py-1 rounded-full font-bold ${
                   activeSection === item.id
                     ? "bg-white/20 text-white"
-                    : "bg-[hsl(111,29%,23%)]/10 text-[hsl(111,29%,23%)]"
+                    : "bg-[hsl(211,75%,44%)]/10 text-[hsl(211,75%,44%)]"
                 }`}>
                   {item.badge}
                 </span>
@@ -3546,15 +3546,15 @@ export function AdminDashboard() {
             <div className="flex items-center gap-4">
               <button 
                 onClick={() => setSidebarOpen(true)}
-                className="lg:hidden p-2 hover:bg-[hsl(111,29%,23%)]/10 rounded-lg transition-colors"
+                className="lg:hidden p-2 hover:bg-[hsl(211,75%,44%)]/10 rounded-lg transition-colors"
               >
-                <Menu className="w-6 h-6 text-[hsl(111,29%,23%)]" />
+                <Menu className="w-6 h-6 text-[hsl(211,75%,44%)]" />
               </button>
               
             </div>
 
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-[hsl(111,29%,23%)] to-[hsl(111,29%,18%)] rounded-xl flex items-center justify-center shadow-md cursor-pointer hover:scale-105 transition-transform">
+              <div className="w-10 h-10 bg-gradient-to-br from-[hsl(211,75%,44%)] to-[hsl(211,75%,34%)] rounded-xl flex items-center justify-center shadow-md cursor-pointer hover:scale-105 transition-transform">
                 <span className="text-white font-bold text-lg">
                   {userProfile?.name?.charAt(0).toUpperCase() || "U"}
                 </span>
