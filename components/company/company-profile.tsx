@@ -335,25 +335,37 @@ export function CompanyProfile({ company }: CompanyProfileProps) {
     setIsSubmitting(true);
 
     try {
-      const supabase = createClient();
-
-      // Guardar review en Supabase
-      const { data, error } = await supabase
-        .from("reviews")
-        .insert({
+      console.log('=== DEBUG REVIEW SUBMISSION ===');
+      console.log('Company ID:', company.id);
+      console.log('Rating:', rating);
+      console.log('Form data:', reviewForm);
+      
+      // Enviar review a través de la API Route
+      const response = await fetch('/api/reviews', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
           company_id: company.id,
-          user_id: null, // Review anónima
           rating: rating,
           title: reviewForm.title,
           comment: reviewForm.comment,
           author_name: reviewForm.name,
           author_email: reviewForm.email,
-          is_approved: false, // Requiere aprobación del admin
-        })
-        .select()
-        .single();
+        }),
+      });
 
-      if (error) throw error;
+      const result = await response.json();
+
+      if (!response.ok) {
+        console.error('=== ERROR DETALLES ===');
+        console.error('Error:', result.error);
+        console.error('Details:', result.details);
+        throw new Error(result.error || 'Error al enviar la review');
+      }
+
+      console.log('✅ Review creado exitosamente:', result.data);
 
       alert(
         "¡Gracias por tu opinión! Tu comentario será revisado y publicado pronto."
