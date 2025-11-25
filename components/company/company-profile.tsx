@@ -339,9 +339,10 @@ export function CompanyProfile({ company }: CompanyProfileProps) {
 
       // Guardar review en Supabase
       const { data, error } = await supabase
-        .from("company_reviews")
+        .from("reviews")
         .insert({
           company_id: company.id,
+          user_id: null, // Review anónima
           rating: rating,
           title: reviewForm.title,
           comment: reviewForm.comment,
