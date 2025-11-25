@@ -189,6 +189,7 @@ export function AdminDashboard() {
     if (companyData?.id) {
       // loadReviews(); // Tabla opcional - comentada temporalmente
       loadBusinessHours();
+      loadProducts();
       // loadBlogs(); // Tabla opcional - comentada temporalmente
     }
   }, [companyData?.id]);
@@ -904,6 +905,27 @@ export function AdminDashboard() {
 
   // ====== FUNCIONES PARA PRODUCTOS ======
   
+  const loadProducts = async () => {
+    if (!companyData?.id) return;
+
+    try {
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('company_id', companyData.id)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error al cargar productos:', error);
+        return;
+      }
+
+      setProducts(data || []);
+    } catch (error) {
+      console.error('Error al cargar productos:', error);
+    }
+  };
+
   const openProductModal = (product?: Product) => {
     if (product) {
       setEditingProduct(product);
@@ -2363,7 +2385,7 @@ export function AdminDashboard() {
                 <h4 className="text-xl font-bold text-gray-900">
                   {entrepreneurName || 'Nombre del Especialista'}
                 </h4>
-                <p className="text-gray-600">Empresario</p>
+                <p className="text-gray-600">Especialista</p>
               </div>
             </div>
           </div>

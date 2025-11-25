@@ -30,10 +30,12 @@ interface StepReviewProps {
 
 export function StepReview({ formData, onBack, onSubmit, loading }: StepReviewProps) {
   const categoryLabels = {
+    'especialista-salud': 'Especialista en Salud',
+    'centro-medico': 'Centro Médico',
+    'agente-digitalizador': 'Agente Digitalizador',
+    // Legacy SENA values para compatibilidad
     'emprendimiento-egresado': 'Egresado con Emprendimiento',
     'empresa-fe': 'Empresa Ganadora FE',
-    'agente-digitalizador': 'Agente Digitalizador',
-    // Legacy values para compatibilidad
     'egresado': 'Egresado con Emprendimiento',
     'empresa': 'Empresa Ganadora FE',
     'instructor': 'Agente Digitalizador'

@@ -56,10 +56,12 @@ const socialIcons: Record<string, any> = {
 };
 
 const categoryLabels: Record<string, string> = {
+  "especialista-salud": "Especialista en Salud",
+  "centro-medico": "Centro Médico",
+  "agente-digitalizador": "Agente Digitalizador",
+  // Legacy SENA values para compatibilidad
   "emprendimiento-egresado": "Egresado con Emprendimiento",
   "empresa-fe": "Empresa Ganadora FE",
-  "agente-digitalizador": "Agente Digitalizador",
-  // Legacy values para compatibilidad
   egresado: "Egresado con Emprendimiento",
   empresa: "Empresa Ganadora FE",
   instructor: "Agente Digitalizador",
@@ -1289,9 +1291,9 @@ export function CompanyProfile({ company }: CompanyProfileProps) {
                   </div>
 
                   <h3 className="text-xl font-bold mb-1">
-                    {(company as any).entrepreneur_name || "Emprendedor"}
+                    {(company as any).entrepreneur_name || "Especialista"}
                   </h3>
-                  <p className="text-gray-600">Empresario</p>
+                  <p className="text-gray-600">Especialista</p>
                 </CardContent>
               </Card>
             )}
@@ -1434,13 +1436,6 @@ export function CompanyProfile({ company }: CompanyProfileProps) {
                     <span className="font-semibold">
                       {categoryLabels[company.category]}
                     </span>
-                  </div>
-
-                  <div className="flex items-center gap-3 pb-3 border-b">
-                    <div className="sena-icon-box">
-                      <Calendar className="h-6 w-6 text-primary" />
-                    </div>
-                    <span className="font-semibold">Eventos</span>
                   </div>
 
                   <div className="flex items-center gap-3">

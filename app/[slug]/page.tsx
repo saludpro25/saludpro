@@ -46,6 +46,18 @@ export default async function CompanyPage({ params }: { params: { slug: string }
     .eq('visibility', 'public')
     .single()
 
+  // Fetch products separately
+  let products = []
+  if (company) {
+    const { data: productsData } = await supabase
+      .from('products')
+      .select('*')
+      .eq('company_id', company.id)
+      .order('created_at', { ascending: false })
+    
+    products = productsData || []
+  }
+
   if (error || !company) {
     console.error('Error loading company:', error)
     notFound()
@@ -57,7 +69,7 @@ export default async function CompanyPage({ params }: { params: { slug: string }
     social_links: company.social_links || [],
     company_images: company.company_images || [],
     company_stats: company.company_stats?.[0] || null,
-    products: [] // Empty array since we don't have products table
+    products: products
   }
 
   return <CompanyProfile company={companyData} />
