@@ -187,7 +187,7 @@ export function AdminDashboard() {
 
   useEffect(() => {
     if (companyData?.id) {
-      // loadReviews(); // Tabla opcional - comentada temporalmente
+      loadReviews(); // Cargar opiniones
       loadBusinessHours();
       loadProducts();
       // loadBlogs(); // Tabla opcional - comentada temporalmente
@@ -348,21 +348,19 @@ export function AdminDashboard() {
     try {
       setIsLoadingReviews(true);
       
-      const { data, error } = await supabase
-        .from('company_reviews')
-        .select('*')
-        .eq('company_id', companyData.id)
-        .order('created_at', { ascending: false });
+      // Usar API Route para cargar reviews (bypasea RLS)
+      const response = await fetch(`/api/reviews?company_id=${companyData.id}`);
+      const result = await response.json();
       
-      if (error) {
-        console.error('Error al cargar opiniones:', error);
+      if (!response.ok) {
+        console.error('Error al cargar opiniones:', result.error);
         return;
       }
       
-      setReviews(data || []);
+      setReviews(result.data || []);
       
       // Contar opiniones pendientes
-      const pending = data?.filter(review => !review.is_approved).length || 0;
+      const pending = result.data?.filter((review: any) => !review.is_approved).length || 0;
       setPendingReviewsCount(pending);
       
     } catch (error) {
@@ -675,13 +673,15 @@ export function AdminDashboard() {
 
   const approveReview = async (reviewId: string) => {
     try {
-      const { error } = await supabase
-        .from('company_reviews')
-        .update({ is_approved: true })
-        .eq('id', reviewId);
+      const response = await fetch('/api/reviews', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: reviewId, is_approved: true })
+      });
       
-      if (error) {
-        console.error('Error al aprobar opinión:', error);
+      if (!response.ok) {
+        const result = await response.json();
+        console.error('Error al aprobar opinión:', result.error);
         alert('Error al aprobar la opinión');
         return;
       }
@@ -702,13 +702,13 @@ export function AdminDashboard() {
     }
     
     try {
-      const { error } = await supabase
-        .from('company_reviews')
-        .delete()
-        .eq('id', reviewId);
+      const response = await fetch(`/api/reviews?id=${reviewId}`, {
+        method: 'DELETE'
+      });
       
-      if (error) {
-        console.error('Error al eliminar opinión:', error);
+      if (!response.ok) {
+        const result = await response.json();
+        console.error('Error al eliminar opinión:', result.error);
         alert('Error al eliminar la opinión');
         return;
       }
